@@ -22,6 +22,10 @@ Route::get('/', function () {
     }
 });
 
+Route::get('/prueba', function (){
+    return "funciona el git en dos locaciones";
+});
+
 Route::middleware(['auth:sanctum', 'verified', 'user.status'])->get('/dashboard', function () {
     //return view('dashboard');
     return view('welcome');
