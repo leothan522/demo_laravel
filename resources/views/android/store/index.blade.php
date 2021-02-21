@@ -23,10 +23,23 @@
                             </div>
                         </div>
                     </div>
-                    <div class="hero__item set-bg" data-setbg="{{ asset('img/banner_2.png') }}">
+                    <div class="col-lg-12 float-right">
+                        <a href="#" id="btn_statusHours" @if(storeHours() && !$productos->isEmpty())
+                        class="btn btn-success"
+                           onclick="storeHours('¡Abierto!', 'Bienvenido, puedes empezar a comprar.', 'success')"
+                           @else
+                           class="btn btn-danger"
+                           onclick="storeHours('¡Cerrado!', 'Lo sentimos, por ahora estamos descansando. Intentalo mas tarde.', 'warning')"
+                            @endif
+                        >
+                            <strong>@if(storeHours() && !$productos->isEmpty()) <i class="icon fa fa-check"></i> ¡Abierto! @else <i
+                                    class="icon fa fa-lock"></i> ¡Cerrado! @endif</strong>
+                        </a>
+                    </div>
+                    {{--<div class="hero__item set-bg" data-setbg="{{ asset('img/banner_2.png') }}">
                         <div class="hero__text">
                             <span>#TELOCOMPRO</span>
-                            <h2>{{--Frase <br/>Publicitaria--}}</h2>
+                            <h2>--}}{{--Frase <br/>Publicitaria--}}{{--</h2>
                             <p>Delivery Disponible</p>
                             <a href="#" id="btn_statusHours" @if(storeHours() && !$productos->isEmpty())
                             class="btn btn-success"
@@ -40,7 +53,7 @@
                                         class="icon fa fa-lock"></i> ¡Cerrado! @endif</strong>
                             </a>
                         </div>
-                    </div>
+                    </div>--}}
                 </div>
             </div>
         </div>
@@ -48,7 +61,7 @@
     <!-- Hero Section End -->
 
     <!-- Categories Section Begin -->
-    @if (!$categorias->isEmpty())
+    {{--@if (!$categorias->isEmpty())
         <section class="categories">
             <div class="container">
                 <div class="row">
@@ -67,7 +80,7 @@
                                 </div>
                             </div>
                         @endforeach
-                        {{--<div class="col-lg-3">
+                        --}}{{--<div class="col-lg-3">
                             <div class="categories__item set-bg" data-setbg="{{ asset('ogani/img/categories/cat-1.jpg') }}">
                                 <h5><a href="{{ route('android.shop_grid') }}">Fresh Fruit</a></h5>
                             </div>
@@ -91,12 +104,12 @@
                             <div class="categories__item set-bg" data-setbg="{{ asset('ogani/img/categories/cat-5.jpg') }}">
                                 <h5><a href="{{ route('android.shop_grid') }}">drink fruits</a></h5>
                             </div>
-                        </div>--}}
+                        </div>--}}{{--
                     </div>
                 </div>
             </div>
         </section>
-    @endif
+    @endif--}}
     <!-- Categories Section End -->
     @if (!$ultimos_productos->isEmpty())
         <section class="latest-product spad">

@@ -78,7 +78,7 @@ class StoreController extends Controller
         $autenticar = new AppController();
         $autenticar->autenticar($id);
         $detalle = Producto::findOrFail($producto);
-        if (!$detalle->estado || $detalle->precio <= 0){
+        if (!$detalle->estado || $detalle->precio <= 0) {
             return back();
         }
 
@@ -119,7 +119,7 @@ class StoreController extends Controller
         $autenticar = new AppController();
         $autenticar->autenticar($id);
         $favoritos = Parametro::where('nombre', 'favoritos')->where('tabla_id', Auth::user()->id)->get();
-        $favoritos->each(function ($parametro){
+        $favoritos->each(function ($parametro) {
             $producto = Producto::find($parametro->valor);
             $parametro->precio = $producto->precio;
             $parametro->estado = $producto->estado;
@@ -139,12 +139,13 @@ class StoreController extends Controller
     {
         $autenticar = new AppController();
         $autenticar->autenticar($id);
+        $dolar = Parametro::where('nombre', 'precio_dolar')->first();
         $carrito = Parametro::where('nombre', 'carrito')->where('tabla_id', Auth::user()->id)->get();
         $agrupados = $carrito->groupBy('valor');
-        $agrupados->each(function ($parametro){
+        $agrupados->each(function ($parametro) {
             $i = 0;
 
-            foreach ($parametro as $producto){
+            foreach ($parametro as $producto) {
                 $i++;
                 $parametro->valor = $producto->valor;
                 $producto = Producto::find($parametro->valor);
@@ -177,7 +178,8 @@ class StoreController extends Controller
         });*/
         return view('android.store.carrito')
             ->with('carrito', $agrupados)
-            ->with('i', 1);
+            ->with('dolarPrecio', $dolar->valor)
+            ->with('i', 0);
     }
 
     public function ajaxCarrito(Request $request)
@@ -216,7 +218,7 @@ class StoreController extends Controller
                         $carrito++;
                         $json['message'] = "Tienes  en el carrito:<br/><strong>" . cerosIzquierda($carrito) . "</strong> " . ucwords($producto->nombre);
                     } else {
-                        if ($carrito == $inventario){
+                        if ($carrito == $inventario) {
                             $max = $inventario;
                         }
                         $json['type'] = "error";
@@ -227,7 +229,7 @@ class StoreController extends Controller
             }
 
 
-        }else{
+        } else {
             $json['type'] = "error";
             $json['title'] = "Producto agotado";
             $json['message'] = "";
@@ -248,7 +250,7 @@ class StoreController extends Controller
         $parametros = Parametro::where('nombre', 'carrito')->where('tabla_id', $id_usuario)->where('valor', $id_producto)->get();
         $cantidad = $parametros->count();
         $descontar = $cantidad * $producto->precio;
-        foreach ($parametros as $parametro){
+        foreach ($parametros as $parametro) {
             $parametro->delete();
         }
         $json['message'] = ucwords($producto->nombre);
@@ -257,6 +259,11 @@ class StoreController extends Controller
         $json['bs'] = precioBolivares($total_actual - $descontar);
 
         return response()->json($json);
+    }
+
+    public function guardarPedido(Request $request, $id)
+    {
+        dd($request->all());
     }
 
 }

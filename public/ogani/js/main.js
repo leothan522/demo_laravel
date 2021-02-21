@@ -203,18 +203,58 @@
     /*-------------------
 		Quantity change
 	--------------------- */
+    /*var proQty = $('.pro-qty');
+    proQty.prepend('<span class="dec qtybtn">-</span>');
+    proQty.append('<span class="inc qtybtn">+</span>');
+    proQty.on('click', '.qtybtn', function () {
+        var $button = $(this);
+        var oldValue = $button.parent().find('input').val();
+        if ($button.hasClass('inc')) {
+            var newVal = parseFloat(oldValue) + 1;
+            //incrementa
+        } else {
+            // Don't allow decrementing below zero
+            //if (oldValue > 0) {
+            if (oldValue > 1) {
+                var newVal = parseFloat(oldValue) - 1;
+                //reduce
+            } else {
+                //newVal = 0;
+                newVal = 1;
+            }
+        }
+        $button.parent().find('input').val(newVal);
+    });*/
+
     var proQty = $('.pro-qty');
     proQty.prepend('<span class="dec qtybtn">-</span>');
     proQty.append('<span class="inc qtybtn">+</span>');
     proQty.on('click', '.qtybtn', function () {
         var $button = $(this);
         var oldValue = $button.parent().find('input').val();
-        var precio = $button.parent().find('input').attr("content");
+        var precio = $button.parent().find('input').attr('content');
+        var id = $button.parent().find('input').attr('id');
+        var mostrar = document.getElementById('mostrar_precio_' + id)
+        var totalDollar = document.getElementById('total_dolar');
+        var dolarPrecio = document.getElementById('total_bs');
+
+        const formatterEuro = new Intl.NumberFormat('de-DE', {
+            //style: 'currency',
+            //currency: 'EUR'
+            minimumFractionDigits: 2
+        })
+
         if ($button.hasClass('inc')) {
             var newVal = parseFloat(oldValue) + 1;
             //incrementa
-
-
+            var nuevoPrecio = parseFloat(newVal) * parseFloat(precio);
+            mostrar.innerHTML = formatterEuro.format(nuevoPrecio);
+            var actual = parseFloat(totalDollar.getAttribute('content'));
+            var nuevoTotal = parseFloat(actual) + parseFloat(precio);
+            totalDollar.setAttribute('content', parseFloat(nuevoTotal))
+            totalDollar.innerHTML = formatterEuro.format(nuevoTotal);
+            var totalBs = parseFloat(dolarPrecio.getAttribute('content')) * nuevoTotal;
+            dolarPrecio.innerHTML = formatterEuro.format(totalBs);
 
         } else {
             // Don't allow decrementing below zero
@@ -222,8 +262,14 @@
             if (oldValue > 1) {
                 var newVal = parseFloat(oldValue) - 1;
                 //reduce
-
-
+                var nuevoPrecio = newVal * precio;
+                mostrar.innerHTML = formatterEuro.format(nuevoPrecio);
+                var actual = parseFloat(totalDollar.getAttribute('content'));
+                var nuevoTotal = parseFloat(actual) - parseFloat(precio);
+                totalDollar.setAttribute('content', parseFloat(nuevoTotal))
+                totalDollar.innerHTML = formatterEuro.format(nuevoTotal);
+                var totalBs = parseFloat(dolarPrecio.getAttribute('content')) * nuevoTotal;
+                dolarPrecio.innerHTML = formatterEuro.format(totalBs);
 
             } else {
                 //newVal = 0;

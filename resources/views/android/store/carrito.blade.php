@@ -6,6 +6,8 @@
 
     <section class="mt-3">
         <div class="container">
+{{--            abrir --}}
+            {!! Form::open(['route' => ['android.carrito.checkout', Auth::user()->id], 'method' => 'post']) !!}
             <div class="row">
                 <div class="col-lg-12">
                     <div class="shoping__cart__table">
@@ -68,21 +70,23 @@
                             </tr>--}}
                             @php($total = 0)
                             @foreach ($carrito as $parametro)
+                                @php($i++)
                                 <tr class="remover_{{ $parametro->valor }}">
                                     <td class="{{--shoping__cart__item--}}">
                                         <img src="{{ asset('img/productos/'.$parametro->file_path.'/t_'.$parametro->imagen) }}" class="img-thumbnail" alt="">
                                         <span>{{ ucwords($parametro->nombre_producto) }}</span>
                                         <span style="font-size: 18px; color: #1c1c1c; font-weight: 700;">${{ formatoMillares($parametro->precio) }}</span>
+                                        <input type="hidden" name="id_producto_{{ $i }}" value="{{ $parametro->valor }}">
                                     </td>
                                     <td class="shoping__cart__quantity">
                                         <div class="quantity">
                                             <div class="pro-qty">
-                                                <input type="text" id="valor_{{ $parametro->valor }}" content="{{ $parametro->precio }}" value="{{ $parametro->cantidad }}">
+                                                <input type="text" name="cantidad_{{ $i }}" id="{{ $parametro->valor }}" value="{{ $parametro->cantidad }}" content="{{ $parametro->precio }}">
                                             </div>
                                         </div>
                                     </td>
                                     <td class="shoping__cart__total">
-                                        $<span>{{ formatoMillares($parametro->subtotal) }}</span>
+                                        $<span id="mostrar_precio_{{ $parametro->valor }}">{{ formatoMillares($parametro->subtotal) }}</span>
                                     </td>
                                     <td class="shoping__cart__item__close">
                                         <a href="#" id="remover_{{ $parametro->valor }}" content="{{ $parametro->valor }}"
@@ -135,6 +139,7 @@
                             </tr>--}}
                             </tbody>
                         </table>
+                        <input type="hidden" name="total_item" value="{{ $i }}">
                     </div>
                 </div>
             </div>
@@ -151,12 +156,15 @@
                         <h5>Total</h5>
                         <ul>
                             <li><i class="fa fa-dollar"></i> <span id="total_dolar" content="{{ $total }}">${{ formatoMillares($total) }}</span></li>
-                            <li>Bs. <span id="total_bs">{{ precioBolivares($total) }}</span></li>
+                            <li>Bs. <span id="total_bs" content="{{ $dolarPrecio }}">{{ precioBolivares($total) }}</span></li>
                         </ul>
-                        <a href="{{ route('android.shop_checkout') }}" class="primary-btn">PROCEDER A PAGAR</a>
+                        <input type="submit" class="primary-btn btn-block" value="FINALIZAR COMPRA">
+                        {{--<a href="{{ route('android.shop_checkout') }}" class="primary-btn">REALIZAR PEDIDO</a>--}}
                     </div>
                 </div>
             </div>
+        {!! Form::close() !!}
+        {{-- cerrar --}}
         </div>
     </section>
     <br/>

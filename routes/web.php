@@ -22,10 +22,6 @@ Route::get('/', function () {
     }
 });
 
-Route::get('/prueba', function (){
-    return "funciona el git en dos locaciones";
-});
-
 Route::middleware(['auth:sanctum', 'verified', 'user.status'])->get('/dashboard', function () {
     //return view('dashboard');
     return view('welcome');
@@ -70,6 +66,7 @@ Route::middleware('android')->prefix('/android')->group(function (){
     Route::get('/detalles/{id}/{producto}', 'Android\StoreController@detalles')->name('android.detalles');
     Route::get('/favoritos/{id}', 'Android\StoreController@favoritos')->name('android.favoritos');
     Route::get('/carrito/{id}', 'Android\StoreController@carrito')->name('android.carrito');
+    Route::post('/carrito/{id}', 'Android\StoreController@guardarPedido')->name('android.carrito.checkout');
 
     //Rutas AJAX
     Route::post('/ajax/favoritos', 'Android\StoreController@ajaxFavoritos')->name('ajax.favoritos');

@@ -71,6 +71,11 @@ class User extends Authenticatable
         return $this->hasOne(Cliente::class, 'users_id', 'id');
     }
 
+    public function pedidos()
+    {
+        return $this->hasOne(Pedido::class, 'users_id', 'id');
+    }
+
     public function parametros()
     {
         return $this->hasMany(Parametro::class, 'tabla_id', 'id');
