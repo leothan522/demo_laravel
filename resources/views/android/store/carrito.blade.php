@@ -7,7 +7,7 @@
     <section class="mt-3">
         <div class="container">
 {{--            abrir --}}
-            {!! Form::open(['route' => ['android.carrito.checkout', Auth::user()->id], 'method' => 'post']) !!}
+            {!! Form::open(['route' => ['android.carrito.checkout', Auth::user()->id], 'method' => 'post', 'name' => 'f1']) !!}
             <div class="row">
                 <div class="col-lg-12">
                     <div class="shoping__cart__table">
@@ -140,24 +140,37 @@
                             </tbody>
                         </table>
                         <input type="hidden" name="total_item" value="{{ $i }}">
+
                     </div>
                 </div>
             </div>
             <div class="row">
-                {{--<div class="col-lg-12">
-                    <div class="shoping__cart__btns">
-                        <a href="#" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
-                        <a href="#" class="primary-btn cart-btn cart-btn-right"><span class="icon_loading"></span>
-                            Upadate Cart</a>
+                <div class="col-lg-12">
+
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="customCheck1" {{--onclick="delivery()"--}} value="SI" content="NO">
+                        <label class="custom-control-label" for="customCheck1">Incluir Delivery</label>
                     </div>
-                </div>--}}
+                    <div id="select_delivery">
+
+                    </div>
+                    {{--{!! Form::select('delivery', $zonas , 0 , ['id'=> 'select_delivery', 'class' => 'd-none', 'placeholder' => strtoupper('Seleccione la zona para el envio'), 'required']) !!}
+                    --}}    {{--<a href="#" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
+                        <a href="#" class="primary-btn cart-btn cart-btn-right"><span class="icon_loading"></span>
+                            Upadate Cart</a>--}}
+                </div>
                 <div class="col-lg-12">
                     <div class="shoping__checkout">
+                        <ul>
+                            <li>Delivery {{--<i class="fa fa-dollar"></i>--}} <span id="mostrarCostoD">-</span></li>
+                        </ul>
                         <h5>Total</h5>
                         <ul>
                             <li><i class="fa fa-dollar"></i> <span id="total_dolar" content="{{ $total }}">${{ formatoMillares($total) }}</span></li>
                             <li>Bs. <span id="total_bs" content="{{ $dolarPrecio }}">{{ precioBolivares($total) }}</span></li>
                         </ul>
+                        <input type="hidden" id="envioCosto" name="paraControl" value="hola" content="hola">
+                        <input id="totalPedido" type="hidden" name="total" value="{{ $total }}">
                         <input type="submit" class="primary-btn btn-block" value="FINALIZAR COMPRA">
                         {{--<a href="{{ route('android.shop_checkout') }}" class="primary-btn">REALIZAR PEDIDO</a>--}}
                     </div>
@@ -264,6 +277,92 @@
                 }
             });
         });
+
+        var checkbox = document.getElementById('customCheck1');
+        checkbox.addEventListener('change', function () {
+            var div = document.getElementById('select_delivery');
+            if(this.checked) {
+                var fieldHTML = '<div id="idRemover" class="input-group justify-content-center">' +
+                    '<?php echo (Form::select('delivery', $zonas , 0 , ['id' => 'select_zona', 'onchange' => 'montoZona()', 'class' => 'form-control', 'placeholder' => strtoupper('Seleccione la zona para el envio'), 'required']))?>' +
+                    '           </div>';
+                div.innerHTML = fieldHTML;
+            }else{
+
+                var envio = document.getElementById('envioCosto');
+                var mostrarEnvio = document.getElementById('mostrarCostoD');
+                var costoActual;
+                if (envio.getAttribute('value') === "hola"){
+                    costoActual = 0;
+                }else {
+                    costoActual = parseFloat(envio.getAttribute('value'));
+                }
+
+                //imput totalpedido
+                var totalPedido = document.getElementById('totalPedido');
+
+                if (true /*precio != ""*/) {
+                    var totalDollar = document.getElementById('total_dolar');
+                    var dolarPrecio = document.getElementById('total_bs');
+                    const formatterEuro = new Intl.NumberFormat('de-DE', {
+                        //style: 'currency',
+                        //currency: 'EUR'
+                        minimumFractionDigits: 2
+                    });
+                    envio.setAttribute('value', "hola");
+                    mostrarEnvio.innerHTML = "-";
+                    var actual = parseFloat(totalDollar.getAttribute('content')) - parseFloat(costoActual);
+                    var nuevoTotal = parseFloat(actual);
+                    totalDollar.setAttribute('content', parseFloat(nuevoTotal));
+                    totalDollar.innerHTML = formatterEuro.format(nuevoTotal);
+                    totalPedido.setAttribute('value', nuevoTotal.toFixed(2));
+                    var totalBs = parseFloat(dolarPrecio.getAttribute('content')) * nuevoTotal;
+                    dolarPrecio.innerHTML = formatterEuro.format(totalBs);
+                }
+
+                var select = document.getElementById('idRemover');
+                var padre = select.parentNode;
+                padre.removeChild(select);
+            }
+        });
+
+        function montoZona() {
+            //tomo el valor del select elegido
+            var precio;
+            precio = document.f1.select_zona[document.f1.select_zona.selectedIndex].value;
+
+            //para trabajar on el costo de envio
+            var envio = document.getElementById('envioCosto');
+            var mostrarEnvio = document.getElementById('mostrarCostoD');
+            var costoActual;
+            if (envio.getAttribute('value') === "hola"){
+                costoActual = 0;
+            }else {
+                costoActual = parseFloat(envio.getAttribute('value'));
+            }
+
+            //imput totalpedido
+            var totalPedido = document.getElementById('totalPedido');
+
+            if (true /*precio != ""*/) {
+                if (precio === ""){ precio = 0; }
+                var totalDollar = document.getElementById('total_dolar');
+                var dolarPrecio = document.getElementById('total_bs');
+                const formatterEuro = new Intl.NumberFormat('de-DE', {
+                    //style: 'currency',
+                    //currency: 'EUR'
+                    minimumFractionDigits: 2
+                });
+                envio.setAttribute('value', precio);
+                mostrarEnvio.innerHTML = formatterEuro.format(precio);
+                var actual = parseFloat(totalDollar.getAttribute('content')) - parseFloat(costoActual);
+                var nuevoTotal = parseFloat(actual) + parseFloat(precio);
+                totalDollar.setAttribute('content', parseFloat(nuevoTotal));
+                totalDollar.innerHTML = formatterEuro.format(nuevoTotal);
+                totalPedido.setAttribute('value', nuevoTotal.toFixed(2));
+                var totalBs = parseFloat(dolarPrecio.getAttribute('content')) * nuevoTotal;
+                dolarPrecio.innerHTML = formatterEuro.format(totalBs);
+            }
+        }
 
     </script>
 @endsection

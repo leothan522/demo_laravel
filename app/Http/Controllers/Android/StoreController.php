@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\Android;
 
 use App\Http\Controllers\Controller;
+use App\Models\Articulo;
 use App\Models\Categoria;
+use App\Models\Cliente;
 use App\Models\Galeria;
 use App\Models\Parametro;
+use App\Models\Pedido;
 use App\Models\Producto;
+use App\Models\Zona;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -176,9 +180,13 @@ class StoreController extends Controller
             $parametro->imagen = $producto->imagen;
             $parametro->nombre_producto = $producto->nombre;
         });*/
+
+        $zonas = Zona::orderBy('nombre', 'ASC')->pluck('nombre', 'precio_delivery');
+
         return view('android.store.carrito')
             ->with('carrito', $agrupados)
             ->with('dolarPrecio', $dolar->valor)
+            ->with('zonas', $zonas)
             ->with('i', 0);
     }
 
@@ -263,7 +271,143 @@ class StoreController extends Controller
 
     public function guardarPedido(Request $request, $id)
     {
-        dd($request->all());
+        $total_item = $request->total_item;
+        for ($i = 1; $i <= $total_item; $i++) {
+
+            $id_producto = $request->get('id_producto_' . $i);
+            $cantidad = $request->get('cantidad_' . $i);
+
+            $producto = Producto::find($id_producto);
+            $precio = $producto->precio;
+            $cant_inventario = $producto->cant_inventario;
+            $venta_individual = $producto->venta_individual;
+            $max_carrito = $producto->max_carrito;
+            $estado = $producto->estado;
+            $visibilidad = $producto->visibilidad;
+            $descuento = $producto->descuento;
+
+            if ($estado != 1) {
+                $parametros = Parametro::where('nombre', 'carrito')->where('tabla_id', $id)->where('valor', $id_producto)->get();
+                foreach ($parametros as $parametro) {
+                    $parametro->delete();
+                }
+                verSweetAlert2("Actualizando carrito...", null, 'warning', null, 'Producto Agotado');
+                return back();
+            }
+
+            if ($cantidad > $cant_inventario) {
+                verSweetAlert2("Actualizando carrito...", null, 'warning', null, 'Canditad NO Disponible');
+                $parametros = Parametro::where('nombre', 'carrito')->where('tabla_id', $id)->where('valor', $id_producto)->get();
+                $max = 0;
+                foreach ($parametros as $parametro) {
+                    $max++;
+                    if ($max > $cant_inventario) {
+                        $parametro->delete();
+                    }
+                }
+                return back();
+            }
+
+            if ($venta_individual) {
+                if ($cantidad > 1) {
+                    $parametros = Parametro::where('nombre', 'carrito')->where('tabla_id', $id)->where('valor', $id_producto)->get();
+                    $uno = true;
+                    foreach ($parametros as $parametro) {
+                        if ($uno) {
+                            $uno = false;
+                        } else {
+                            $parametro->delete();
+                        }
+                    }
+                    verSweetAlert2("Actualizando carrito...", null, 'warning', null, 'Cant. Maxima Superada');
+                    return back();
+                }
+            } else {
+                if ($cantidad > $max_carrito) {
+                    $parametros = Parametro::where('nombre', 'carrito')->where('tabla_id', $id)->where('valor', $id_producto)->get();
+                    $max = 0;
+                    foreach ($parametros as $parametro) {
+                        $max++;
+                        if ($max > $max_carrito) {
+                            $parametro->delete();
+                        }
+                    }
+                    verSweetAlert2("Actualizando carrito...", null, 'warning', null, 'Cant. Maxima Superada');
+                    return back();
+                }
+            }
+
+        }
+
+        //dd($request->all());
+
+        //empezamos a guardar el pedido
+        $pedido = new Pedido();
+        $pedido->users_id = $id;
+        $pedido->total = $request->total;
+
+        if ($request->paraControl != "hola") {
+            $pedido->delivery = "SI";
+            $pedido->costo_delivery = $request->delivery;
+            $pedido->subtotal = $request->total - $request->delivery;
+        } else {
+            $pedido->delivery = "NO";
+            $pedido->subtotal = $request->total;
+        }
+
+        $pedido->fecha = date("Y-m-d");
+
+        $cliente = Cliente::where('users_id', $id)->first();
+        if ($cliente) {
+            $pedido->cedula = $cliente->cedula;
+            $pedido->nombre = $cliente->nombre;
+            $pedido->apellidos = $cliente->apellidos;
+            $pedido->telefono = $cliente->telefono;
+            $pedido->direccion_1 = $cliente->direccion_1;
+            $pedido->direccion_2 = $cliente->direccion_2;
+            $pedido->localidad = $cliente->localidad;
+        }
+
+        $pedido->save();
+
+        //guardamos cada item del pedido en la tabla articulos
+
+        for ($i = 1; $i <= $total_item; $i++) {
+
+            $id_producto = $request->get('id_producto_' . $i);
+            $cantidad = $request->get('cantidad_' . $i);
+
+            $producto = Producto::find($id_producto);
+            $precio = $producto->precio;
+
+            $articulo = new Articulo();
+            $articulo->pedidos_id = $pedido->id;
+            $articulo->productos_id = $id_producto;
+            $articulo->cantidad = $cantidad;
+            $articulo->precio_pedido = $precio;
+            $articulo->save();
+        }
+
+        //vaciamos el carrito
+
+        $parametros = Parametro::where('nombre', 'carrito')->where('tabla_id', $id)->get();
+        foreach ($parametros as $parametro){
+            $parametro->delete();
+        }
+
+        verSweetAlert2('Su pedido ha sido reservado', 'toast');
+        return redirect()->route('android.checkout', $id);
     }
+
+
+    public function checkout($id)
+    {
+        $pedido = Pedido::where('users_id', $id)->orderBy('id', 'DESC')->first();
+        $articulos = Articulo::where('pedidos_id', $pedido->id)->get();
+        return view('android.store.checkout')
+            ->with('pedido', $pedido)
+            ->with('articulos', $articulos);
+    }
+
 
 }

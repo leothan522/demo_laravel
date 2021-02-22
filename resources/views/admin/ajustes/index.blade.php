@@ -179,8 +179,154 @@
                         </div>
                     </div>
                 </div>
-
         </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card card-purple">
+                    <div class="card-header">
+                        <h5 class="card-title">Delivery</h5>
+                        <div class="card-tools">
+                            <button class="btn btn-tool" data-toggle="modal" data-target="#modal-delivery"><i class="fa fa-truck"></i></button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+
+                        <table class="table table-hover bg-light">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col" class="text-center" data-breakpoints="xs">#</th>
+                                <th scope="col">Zona</th>
+                                <th scope="col" data-breakpoints="xs" class="text-right">Precio</th>
+                                <th scope="col" data-breakpoints="xs" style="width: 5%;"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach ($zonas as $zona)
+                                <tr>
+                                    <th scope="row" class="text-center">{{ $i++ }}</th>
+                                    <td>{{ ucwords($zona->nombre) }}</td>
+                                    <td class="text-right text-bold">${{ formatoMillares($zona->precio_delivery) }}</td>
+                                    <td>
+                                        {!! Form::open(['route' => ['ajustes.zonas.delete', $zona->id], 'method' => 'DELETE', 'id' => 'form_delete_'.$zona->id]) !!}
+                                        <div class="btn-group">
+                                            @if (leerJson(Auth::user()->permisos, 'usuarios.show') || Auth::user()->role == 100)
+                                                <button class="btn btn-info" data-toggle="modal" data-target="#modal-delivery-{{ $zona->id }}"><i class="fas fa-edit"></i></button>
+                                            @endif
+                                            @if (leerJson(Auth::user()->permisos, 'usuarios.edit') || Auth::user()->role == 100)
+                                                    <button type="button" onclick="alertaBorrar('form_delete_{{ $zona->id }}')" class="btn btn-info">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                            @endif
+                                        </div>
+                                    {!! Form::close() !!}
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="modal-delivery-{{ $zona->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Editar Zona</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+
+                                                        {!! Form::open(['route' => ['ajustes.zonas.update', $zona->id], 'method' => 'PUT']) !!}
+
+                                                        <div class="form-group">
+                                                            <label for="name">Nombre</label>
+                                                            <div class="input-group mb-3">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text"><i class="fas fa-clone"></i></span>
+                                                                </div>
+                                                                {!! Form::text('nombre', ucwords($zona->nombre), ['class' => 'form-control', 'placeholder' => 'Nombre de la zona']) !!}
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="name">Precio del envio</label>
+                                                            <div class="input-group mb-3">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                                                </div>
+                                                                {!! Form::number('precio_delivery', $zona->precio_delivery, ['class' => 'form-control', 'placeholder' => 'Cantidad',
+                                                                    'min' => 0, 'pattern' => "^[0-9]+", 'step' => '0.01']) !!}
+                                                            </div>
+                                                            <span class="text-danger text-xs">Dejar el precio vacio si el envio sera gratuito</span>
+                                                        </div>
+                                                        <div class="form-group text-right">
+                                                            <input type="submit" class="btn btn-block btn-primary" value="Guardar">
+                                                        </div>
+
+                                                        {!! Form::close() !!}
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /Modal -->
+
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="modal-delivery" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Nueva Zona</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        {!! Form::open(['route' => ['ajustes.zonas'], 'method' => 'POST']) !!}
+
+                                        <div class="form-group">
+                                            <label for="name">Nombre</label>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fas fa-clone"></i></span>
+                                                </div>
+                                                {!! Form::text('nombre', null, ['class' => 'form-control', 'placeholder' => 'Nombre de la zona']) !!}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="name">Precio del envio</label>
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                                </div>
+                                                {!! Form::number('precio_delivery', null, ['class' => 'form-control', 'placeholder' => 'Cantidad',
+                                                    'min' => 0, 'pattern' => "^[0-9]+", 'step' => '0.01']) !!}
+                                            </div>
+                                            <span class="text-danger text-xs">Dejar el precio vacio si el envio sera gratuito</span>
+                                        </div>
+                                        <div class="form-group text-right">
+                                            <input type="submit" class="btn btn-block btn-primary" value="Guardar">
+                                        </div>
+
+                                        {!! Form::close() !!}
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /Modal -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
 
         {{--<div class="row justify-content-center">
             <div class="col-md-9 text-right p-3">

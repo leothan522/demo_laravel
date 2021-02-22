@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Parametro;
+use App\Models\Zona;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,10 +20,14 @@ class AjustesController extends Controller
         $telefono_texto = Parametro::where('nombre', 'telefono_texto')->first();
         if (!$telefono_texto){  $telefono_texto = $vacio; }
 
+        $zonas = Zona::all();
+
         return view('admin.ajustes.index')
             ->with('dolar', $dolar)
             ->with('telefono_numero', $telefono_numero)
-            ->with('telefono_texto', $telefono_texto);
+            ->with('telefono_texto', $telefono_texto)
+            ->with('zonas', $zonas)
+            ->with('i', 1);
 
     }
 
@@ -67,6 +72,34 @@ class AjustesController extends Controller
             $parametros->save();
         }
 
+    }
+
+    public function zonas(Request $request)
+    {
+        //dd($request->all());
+        $zona = new Zona($request->all());
+        $zona->precio_delivery = $request->precio_delivery;
+        $zona->save();
+        verSweetAlert2('Ajustes guardados correctamente', 'toast');
+        return back();
+    }
+
+    public function zonasUpdate(Request $request, $id)
+    {
+        $zona = Zona::find($id);
+        $zona->nombre = $request->nombre;
+        $zona->precio_delivery = $request->precio_delivery;
+        $zona->update();
+        verSweetAlert2('Ajustes guardados correctamente', 'toast');
+        return back();
+    }
+
+    public function zonaDelete($id)
+    {
+        $zona = Zona::find($id);
+        $zona->delete();
+        verSweetAlert2('Ajustes guardados correctamente', 'toast');
+        return back();
     }
 
 }

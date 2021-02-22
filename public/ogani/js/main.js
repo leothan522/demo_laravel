@@ -237,12 +237,13 @@
         var mostrar = document.getElementById('mostrar_precio_' + id)
         var totalDollar = document.getElementById('total_dolar');
         var dolarPrecio = document.getElementById('total_bs');
+        var totalPedido = document.getElementById('totalPedido');
 
         const formatterEuro = new Intl.NumberFormat('de-DE', {
             //style: 'currency',
             //currency: 'EUR'
             minimumFractionDigits: 2
-        })
+        });
 
         if ($button.hasClass('inc')) {
             var newVal = parseFloat(oldValue) + 1;
@@ -253,6 +254,7 @@
             var nuevoTotal = parseFloat(actual) + parseFloat(precio);
             totalDollar.setAttribute('content', parseFloat(nuevoTotal))
             totalDollar.innerHTML = formatterEuro.format(nuevoTotal);
+            totalPedido.setAttribute('value', nuevoTotal.toFixed(2));
             var totalBs = parseFloat(dolarPrecio.getAttribute('content')) * nuevoTotal;
             dolarPrecio.innerHTML = formatterEuro.format(totalBs);
 
@@ -268,6 +270,7 @@
                 var nuevoTotal = parseFloat(actual) - parseFloat(precio);
                 totalDollar.setAttribute('content', parseFloat(nuevoTotal))
                 totalDollar.innerHTML = formatterEuro.format(nuevoTotal);
+                totalPedido.setAttribute('value', nuevoTotal.toFixed(2));
                 var totalBs = parseFloat(dolarPrecio.getAttribute('content')) * nuevoTotal;
                 dolarPrecio.innerHTML = formatterEuro.format(totalBs);
 

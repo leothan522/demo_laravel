@@ -41,6 +41,9 @@ Route::middleware(['auth', 'user.status', 'isadmin'])->prefix('/admin')->group(f
         //Ajustes
         Route::get('/ajustes', 'Admin\AjustesController@index')->name('ajustes.index');
         Route::post('/ajustes', 'Admin\AjustesController@store')->name('ajustes.store');
+        Route::post('/zonas', 'Admin\AjustesController@zonas')->name('ajustes.zonas');
+        Route::put('/zonas/{id}/edit', 'Admin\AjustesController@zonasUpdate')->name('ajustes.zonas.update');
+        Route::delete('/zonas/{id}/destroy', 'Admin\AjustesController@zonaDelete')->name('ajustes.zonas.delete');
 
         //Store Hours
         Route::get('/horarios', 'Admin\StoreHoursController@index')->name('horarios.index');

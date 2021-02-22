@@ -1,6 +1,7 @@
 <?php
 //Funciones Personalizadas para el Proyecto
 
+
 use App\Models\Parametro;
 use Carbon\Carbon;
 
@@ -184,12 +185,38 @@ function undPeso($i = null)
 }
 
 //Alertas de sweetAlert2
-function verSweetAlert2($mensaje, $alert = null, $type = 'success', $icono = '<i class="fa fa-trash-alt"></i>')
+function verSweetAlert2($mensaje, $alert = null, $type = 'success', $icono = '<i class="fa fa-trash-alt"></i>', $titulo = null)
 {
     switch ($alert) {
         default:
             alert()->success('¡Éxito!', $mensaje)->persistent(true, false);
-            break;
+            switch ($type){
+                default:
+                    if ($titulo == null){
+                        $titulo = '¡Éxito!';
+                    }
+                    alert()->success($titulo, $mensaje)->persistent(true, false);
+                break;
+                case "info":
+                    if ($titulo == null){
+                        $titulo = '¡Info!';
+                    }
+                    alert()->info($titulo, $mensaje)->persistent(true, false);
+                break;
+                case "warning":
+                    if ($titulo == null){
+                        $titulo = '¡Alerta!';
+                    }
+                    alert()->warning($titulo, $mensaje)->persistent(true, false);
+                    break;
+                case "error":
+                    if ($titulo == null){
+                        $titulo = '¡Error!';
+                    }
+                    alert()->error($titulo, $mensaje)->persistent(true, false);
+                    break;
+            }
+        break;
         case "iconHtml":
             alert('¡Éxito!', $mensaje, $type)->iconHtml($icono)->persistent(true, false)->toHtml();
             break;
@@ -352,3 +379,5 @@ function hourIsBetween($from, $to, $input) {
 Comprobaremos si la segunda hora que le pasamos es inferior a la primera, con lo cual entenderemos que es para el día siguiente.
 Y al final devolveremos true o false dependiendo si el valor introducido se encuentra entre lo que le hemos pasado.*/
 }
+
+
