@@ -7,6 +7,7 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="routeName" content="{{ Route::currentRouteName() }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     <!-- Favicons -->
     <link rel="apple-touch-icon" href="{{ asset('img/favicons/apple-touch-icon.png') }}" sizes="180x180">

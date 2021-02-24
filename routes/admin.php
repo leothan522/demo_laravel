@@ -44,10 +44,16 @@ Route::middleware(['auth', 'user.status', 'isadmin'])->prefix('/admin')->group(f
         Route::post('/zonas', 'Admin\AjustesController@zonas')->name('ajustes.zonas');
         Route::put('/zonas/{id}/edit', 'Admin\AjustesController@zonasUpdate')->name('ajustes.zonas.update');
         Route::delete('/zonas/{id}/destroy', 'Admin\AjustesController@zonaDelete')->name('ajustes.zonas.delete');
+        Route::post('/metodos', 'Admin\AjustesController@metodosPago')->name('ajustes.mpago');
+        Route::put('/metodos/{id}/edit', 'Admin\AjustesController@metodosPagoUpdate')->name('ajustes.mpago.update');
+        Route::delete('/metodos/{id}/destroy', 'Admin\AjustesController@metodosPagoDestroy')->name('ajustes.mpago.destroy');
 
         //Store Hours
         Route::get('/horarios', 'Admin\StoreHoursController@index')->name('horarios.index');
         Route::post('/horarios', 'Admin\StoreHoursController@store')->name('horarios.store');
+
+        //Rutas AJAX
+        Route::post('/ajax/metodos', 'Admin\AjustesController@ajaxMetodos')->name('ajax.mpago');
 
     });
 

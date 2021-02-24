@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cuenta;
 use App\Models\Parametro;
 use App\Models\Zona;
 use Illuminate\Http\Request;
@@ -21,12 +22,25 @@ class AjustesController extends Controller
         if (!$telefono_texto){  $telefono_texto = $vacio; }
 
         $zonas = Zona::all();
+        $cuentas = Cuenta::all();
+
+        $pago_divisas = Parametro::where('nombre', 'metodo_pago')->where('tabla_id', 1)->first();
+        if ($pago_divisas){ $valor_divisas = $pago_divisas->valor; }else{ $valor_divisas = false; }
+        $pago_transferencias = Parametro::where('nombre', 'metodo_pago')->where('tabla_id', 2)->first();
+        if ($pago_transferencias){ $valor_transferencia = $pago_transferencias->valor; }else{ $valor_transferencia = false; }
+        $pago_movil = Parametro::where('nombre', 'metodo_pago')->where('tabla_id', 3)->first();
+        if ($pago_movil){ $valor_movil = $pago_movil->valor; }else{ $valor_movil = false; }
+
 
         return view('admin.ajustes.index')
             ->with('dolar', $dolar)
             ->with('telefono_numero', $telefono_numero)
             ->with('telefono_texto', $telefono_texto)
             ->with('zonas', $zonas)
+            ->with('cuentas', $cuentas)
+            ->with('pago_divisas', $valor_divisas)
+            ->with('pago_transferencia', $valor_transferencia)
+            ->with('pago_movil', $valor_movil)
             ->with('i', 1);
 
     }
@@ -100,6 +114,60 @@ class AjustesController extends Controller
         $zona->delete();
         verSweetAlert2('Ajustes guardados correctamente', 'toast');
         return back();
+    }
+
+    public function metodosPago(Request $request)
+    {
+        $cuenta = new Cuenta();
+        $cuenta->banco = strtoupper($request->banco);
+        $cuenta->tipo = strtoupper($request->tipo);
+        $cuenta->numero = $request->numero;
+        $cuenta->titular = strtoupper($request->titular);
+        $cuenta->rif_cedula = strtoupper($request->rif_cedula);
+        $cuenta->save();
+        verSweetAlert2('Ajustes guardados correctamente', 'toast');
+        return back();
+    }
+
+    public function metodosPagoUpdate(Request $request, $id)
+    {
+        $cuenta = Cuenta::find($id);
+        $cuenta->banco = strtoupper($request->banco);
+        $cuenta->tipo = strtoupper($request->tipo);
+        $cuenta->numero = $request->numero;
+        $cuenta->titular = strtoupper($request->titular);
+        $cuenta->rif_cedula = strtoupper($request->rif_cedula);
+        $cuenta->Update();
+        verSweetAlert2('Ajustes guardados correctamente', 'toast');
+        return back();
+    }
+
+    public function metodosPagoDestroy($id)
+    {
+        $cuenta = Cuenta::find($id);
+        $cuenta->delete();
+        verSweetAlert2('Ajustes guardados correctamente', 'toast');
+        return back();
+    }
+
+    public function ajaxMetodos(Request $request)
+    {
+        $nombre = $request->nombre;
+        $valor = $request->valor;
+        $metodoPago = Parametro::where('nombre', 'metodo_pago')->where('tabla_id', $nombre)->first();
+        if (!$metodoPago) {
+            $parametros = new Parametro();
+            $parametros->nombre = "metodo_pago";
+            $parametros->tabla_id = $nombre;
+            $parametros->valor = $valor;
+            $parametros->save();
+            $json = ['valor' => true];
+        } else {
+            $json = ['valor' => false];
+            $metodoPago->valor = $valor;
+            $metodoPago->update();
+        }
+        return response()->json($json);
     }
 
 }
