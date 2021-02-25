@@ -189,7 +189,7 @@ function verSweetAlert2($mensaje, $alert = null, $type = 'success', $icono = '<i
 {
     switch ($alert) {
         default:
-            alert()->success('¡Éxito!', $mensaje)->persistent(true, false);
+            //alert()->success('¡Éxito!', $mensaje)->persistent(true, false);
             switch ($type){
                 default:
                     if ($titulo == null){

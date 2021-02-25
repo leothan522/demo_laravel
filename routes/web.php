@@ -69,6 +69,7 @@ Route::middleware('android')->prefix('/android')->group(function (){
     Route::get('/carrito/{id}', 'Android\StoreController@carrito')->name('android.carrito');
     Route::post('/carrito/{id}', 'Android\StoreController@guardarPedido')->name('android.carrito.checkout');
     Route::get('/checkout/{id}', 'Android\StoreController@checkout')->name('android.checkout');
+    Route::post('/checkout/{id}', 'Android\StoreController@checkoutStore')->name('android.checkout.store');
 
     //Rutas AJAX
     Route::post('/ajax/favoritos', 'Android\StoreController@ajaxFavoritos')->name('ajax.favoritos');

@@ -17,13 +17,14 @@ class CreateMovimientosTable extends Migration
             $table->id();
             $table->bigInteger('pedidos_id')->unsigned();
             $table->bigInteger('cuentas_id')->unsigned();
-            $table->string('referencia');
-            $table->decimal('monto', 12, 2);
-            $table->string('capture');
-            $table->integer('estatus');
+            $table->string('referencia')->nullable();
+            $table->decimal('monto', 12, 2)->nullable();
+            $table->string('capture')->nullable();
+            $table->integer('estatus')->default(0);
             $table->string('tipo');
-            $table->bigInteger('reembolsos_id');
+            $table->bigInteger('reembolsos_id')->nullable();
             $table->bigInteger('users_id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

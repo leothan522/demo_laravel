@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Articulo;
 use App\Models\Categoria;
 use App\Models\Cliente;
+use App\Models\Cuenta;
 use App\Models\Galeria;
+use App\Models\Movimiento;
 use App\Models\Parametro;
 use App\Models\Pedido;
 use App\Models\Producto;
@@ -395,7 +397,7 @@ class StoreController extends Controller
             $parametro->delete();
         }
 
-        verSweetAlert2('Su pedido ha sido reservado', 'toast');
+        //verSweetAlert2('Su pedido ha sido reservado', 'toast');
         return redirect()->route('android.checkout', $id);
     }
 
@@ -404,9 +406,100 @@ class StoreController extends Controller
     {
         $pedido = Pedido::where('users_id', $id)->orderBy('id', 'DESC')->first();
         $articulos = Articulo::where('pedidos_id', $pedido->id)->get();
+        $pago_divisas = Parametro::where('nombre', 'metodo_pago')->where('tabla_id', 1)->first();
+        if ($pago_divisas){ $valor_divisas = $pago_divisas->valor; }else{ $valor_divisas = false; }
+        $pago_transferencias = Parametro::where('nombre', 'metodo_pago')->where('tabla_id', 2)->first();
+        if ($pago_transferencias){ $valor_transferencia = $pago_transferencias->valor; }else{ $valor_transferencia = false; }
+        $pago_movil = Parametro::where('nombre', 'metodo_pago')->where('tabla_id', 3)->first();
+        if ($pago_movil){ $valor_movil = $pago_movil->valor; }else{ $valor_movil = false; }
+
+        $cuentas = Cuenta::all();
+        $trasnferencias = Cuenta::where('tipo', '!=', 'PAGO_MOVIL')->pluck('banco', 'id');
+        $movil = Cuenta::where('tipo', 'PAGO_MOVIL')->pluck('banco', 'id');
+
+        $cliente = Cliente::where('users_id', Auth::user()->id)->first();
+
+
         return view('android.store.checkout')
             ->with('pedido', $pedido)
-            ->with('articulos', $articulos);
+            ->with('articulos', $articulos)
+            ->with('pago_divisas', $valor_divisas)
+            ->with('pago_transferencia', $valor_transferencia)
+            ->with('pago_movil', $valor_movil)
+            ->with('cuentas', $cuentas)
+            ->with('transferencias', $trasnferencias)
+            ->with('movil', $movil)
+            ->with('cliente', $cliente);
+    }
+
+    public function checkoutStore(Request $request, $id)
+    {
+        if (!$request->mpago_transferencia && !$request->mpago_movil && !$request->mpago_divisas){
+            verSweetAlert2('Elija un metodo de pago.', null, 'error');
+            return back();
+        }
+
+        $pedido = Pedido::find($id);
+
+        if (!$request->direccion_principal){
+            if ($request->id_cliente){
+                $pedido->direccion_1 = $request->direccion_1;
+                $pedido->direccion_2 = $request->direccion_2;
+                $pedido->localidad = $request->localidad;
+                $pedido->update();
+            }else{
+                $cliente = new Cliente($request->all());
+                $cliente->users_id = Auth::user()->id;
+                $cliente->save();
+                $pedido->cedula = $cliente->cedula;
+                $pedido->nombre = $cliente->nombre;
+                $pedido->apellidos = $cliente->apellidos;
+                $pedido->telefono = $cliente->telefono;
+                $pedido->direccion_1 = $cliente->direccion_1;
+                $pedido->direccion_2 = $cliente->direccion_2;
+                $pedido->localidad = $cliente->localidad;
+                $pedido->update();
+            }
+        }
+
+        if ($request->mpago_transferencia){
+            $pago = new Movimiento();
+            $pago->pedidos_id = $pedido->id;
+            $pago->cuentas_id = $request->cuenta_id_transferencia;
+            $pago->referencia = $request->referencia_transferencia;
+            $pago->tipo = "Pago";
+            $pago->users_id = Auth::user()->id;
+            $pago->save();
+        }
+
+        if ($request->mpago_movil){
+            $pago = new Movimiento();
+            $pago->pedidos_id = $pedido->id;
+            $pago->cuentas_id = $request->cuenta_id_movil;
+            $pago->referencia = $request->referencia_movil;
+            $pago->tipo = "Pago";
+            $pago->users_id = Auth::user()->id;
+            $pago->save();
+        }
+
+        if ($request->mpago_divisas){
+            $pago = new Movimiento();
+            $pago->pedidos_id = $pedido->id;
+            $pago->cuentas_id = 0;
+            $pago->tipo = "Pago";
+            $pago->users_id = Auth::user()->id;
+            $pago->save();
+        }
+
+        if ($request->notas_cliente != ""){
+            $pedido->nota_cliente = $request->notas_cliente;
+        }
+
+        $pedido->estatus = 1;
+        $pedido->update();
+
+        //verSweetAlert2('Pago registrado');
+        dd($request->all());
     }
 
 

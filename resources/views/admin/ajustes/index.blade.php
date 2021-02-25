@@ -741,7 +741,7 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="fas fa-book"></i></span>
                                                 </div>
-                                                {!! Form::text('numero', null, ['class' => 'form-control', 'placeholder' => 'Numero', 'required']) !!}
+                                                {!! Form::text('numero', null, ['class' => 'form-control', 'placeholder' => 'Numero', 'required', 'data-inputmask' => '"mask": "9999-9999-9999-9999-9999"', 'data-mask']) !!}
                                             </div>
                                         </div>
                                         <div class="form-group">
