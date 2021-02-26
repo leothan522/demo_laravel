@@ -59,9 +59,11 @@ Route::middleware('android')->prefix('/android')->group(function (){
         return view('android.prueba');
     })->name('android.no_definida');
 
-    //Principales
+    //Facturacion y envio
     Route::get('/facturacion-envio/{id}', 'Android\FacturacionController@index')->name('android.facturacion.index');
     Route::post('/facturacion-envio/{id}', 'Android\FacturacionController@update')->name('android.facturacion.update');
+
+    //store
     Route::get('/store/{id}', 'Android\StoreController@index')->name('android.store.index');
     Route::get('/categorias/{id}/{categoria}/{store?}', 'Android\StoreController@categorias')->name('android.categorias');
     Route::get('/detalles/{id}/{producto}', 'Android\StoreController@detalles')->name('android.detalles');
@@ -70,6 +72,10 @@ Route::middleware('android')->prefix('/android')->group(function (){
     Route::post('/carrito/{id}', 'Android\StoreController@guardarPedido')->name('android.carrito.checkout');
     Route::get('/checkout/{id}', 'Android\StoreController@checkout')->name('android.checkout');
     Route::post('/checkout/{id}', 'Android\StoreController@checkoutStore')->name('android.checkout.store');
+
+    //pedidos
+    Route::get('/pedidos/{id}', 'Android\PedidosController@index')->name('android.pedidos');
+    Route::get('/pedidos/{id}/{pedido}', 'Android\PedidosController@show')->name('android.pedidos.show');
 
     //Rutas AJAX
     Route::post('/ajax/favoritos', 'Android\StoreController@ajaxFavoritos')->name('ajax.favoritos');

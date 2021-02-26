@@ -23,9 +23,11 @@
                             @endforeach
                         </ul>
                         <div class="checkout__order__subtotal">Subtotal <span>${{ formatoMillares($pedido->subtotal) }}</span></div>
+                        @if ($pedido->delivery == "SI")
                         <ul>
                             <li>Delivery <span>${{ formatoMillares($pedido->costo_delivery) }}</span></li>
                         </ul>
+                        @endif
                         <div class="checkout__order__total">Total <span>${{ formatoMillares($pedido->total) }}</span></div>
                         {!! Form::open(['route' => ['android.checkout.store', $pedido->id], 'method' => 'post']) !!}
 
@@ -102,7 +104,7 @@
                         </div>
 
                             @else
-
+                            @if ($pedido->delivery == "SI")
                             <div class="checkout__input__checkbox">
                                 <label for="acc-or">
                                     ¿Dirección de Envio?
@@ -118,6 +120,7 @@
                                     <small><a href="#" class="text-primary" data-toggle="modal" data-target="#exampleModalCenter4">(Ver Dirección)</a></small>
                                 </label>
                             </div>
+                            @endif
                             <!-- Modal -->
                             <div class="modal fade" id="exampleModalCenter4" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter1Title" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">

@@ -273,6 +273,11 @@ class StoreController extends Controller
 
     public function guardarPedido(Request $request, $id)
     {
+        $validar = Pedido::where('users_id', $id)->where('estatus', 0)->first();
+        if ($validar){
+            verSweetAlert2('Usted tiene un Pedido Pendiente por Pago, NO puede realizar mas pedidos hasta procesar el anterior', null, 'warning');
+            return back();
+        }
         $total_item = $request->total_item;
         for ($i = 1; $i <= $total_item; $i++) {
 
@@ -441,6 +446,11 @@ class StoreController extends Controller
 
         $pedido = Pedido::find($id);
 
+        if ($pedido->estatus){
+            //verSweetAlert2('Tu pedido esta en espera de confirmacion del pago');
+            return redirect()->route('android.pedidos.show', [$id, $pedido->id]);
+        }
+
         if (!$request->direccion_principal){
             if ($request->id_cliente){
                 $pedido->direccion_1 = $request->direccion_1;
@@ -498,8 +508,8 @@ class StoreController extends Controller
         $pedido->estatus = 1;
         $pedido->update();
 
-        //verSweetAlert2('Pago registrado');
-        dd($request->all());
+        verSweetAlert2('Pago registrado');
+        return redirect()->route('android.pedidos.show', [$id, $pedido->id]);
     }
 
 
