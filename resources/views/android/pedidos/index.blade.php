@@ -65,7 +65,7 @@
                                     " class="nav-link">
                                     {{--<i class="fas fa-flag"></i>--}}
                                     {{ $i }}.- Pedido <b>#{{ $pedido->id }}</b>
-                                    <small> ({{ haceCuanto($pedido->fecha) }})</small>
+                                    <small> ({{ haceCuanto($pedido->created_at) }})</small>
                                     <span class="float-right">
                                         @if ($pedido->estatus == 0)
                                             <span class="badge bg-warning">Pendiente de Pago</span>

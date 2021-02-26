@@ -190,7 +190,7 @@
                             --}}
                         </ol>
 
-                        <table class="table table-hover bg-light">
+                        <table class="table table-hover bg-light table-responsive">
                             <thead class="thead-dark">
                             <tr>
                                 <th scope="col" class="text-center" data-breakpoints="xs">ID</th>

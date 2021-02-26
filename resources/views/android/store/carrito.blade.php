@@ -218,6 +218,10 @@
 
 @endsection
 
+@section('nice-select')
+    <script src="{{ asset('ogani/js/jquery.nice-select.min.js') }}"></script>
+@endsection
+
 @section('script')
     <script type="text/javascript">
 

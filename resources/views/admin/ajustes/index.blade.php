@@ -324,7 +324,7 @@
                     </div>
                     <div class="card-body">
 
-                        <table class="table table-hover bg-light">
+                        <table class="table table-hover bg-light table-responsive">
                             <thead class="thead-dark">
                             <tr>
                                 <th scope="col" class="text-center" data-breakpoints="xs">#</th>
@@ -480,7 +480,7 @@
                                 <div class="invalid-feedback">Metodo de pago inactivo</div>
                             </div>
                         {!! Form::close() !!}
-                        <table class="table table-hover bg-light">
+                        <table class="table table-hover bg-light table-responsive">
                             <thead class="thead-dark">
                             <tr>
                                 <th scope="col" class="text-center" data-breakpoints="xs">#</th>
@@ -606,7 +606,7 @@
                             </div>
                         {!! Form::close() !!}
 
-                        <table class="table table-hover bg-light">
+                        <table class="table table-hover bg-light table-responsive">
                             <thead class="thead-dark">
                             <tr>
                                 <th scope="col" class="text-center" data-breakpoints="xs">#</th>

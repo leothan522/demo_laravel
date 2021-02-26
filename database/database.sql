@@ -83,12 +83,10 @@ CREATE TABLE IF NOT EXISTS `clientes` (
   CONSTRAINT `clientes_municipios_id_foreign` FOREIGN KEY (`municipios_id`) REFERENCES `municipios` (`id`) ON DELETE SET NULL,
   CONSTRAINT `clientes_parroquias_id_foreign` FOREIGN KEY (`parroquias_id`) REFERENCES `parroquias` (`id`) ON DELETE SET NULL,
   CONSTRAINT `clientes_users_id_foreign` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Volcando datos para la tabla demo.clientes: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `clientes` DISABLE KEYS */;
-INSERT INTO `clientes` (`id`, `cedula`, `nombre`, `apellidos`, `telefono`, `direccion_1`, `direccion_2`, `localidad`, `codigo_postal`, `estados_id`, `municipios_id`, `parroquias_id`, `num_pedidos`, `gasto_bs`, `gasto_dolar`, `ultima_compra`, `users_id`, `created_at`, `updated_at`) VALUES
-	(1, '20025623', 'Yonathan', 'Castillo', '04243386600', 'La morera', 'Casa 23', 'San Juan de los morros', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2021-02-17 04:47:56', '2021-02-17 04:47:56');
 /*!40000 ALTER TABLE `clientes` ENABLE KEYS */;
 
 -- Volcando estructura para tabla demo.cuentas
@@ -101,6 +99,7 @@ CREATE TABLE IF NOT EXISTS `cuentas` (
   `rif_cedula` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -160,13 +159,14 @@ CREATE TABLE IF NOT EXISTS `movimientos` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `pedidos_id` bigint(20) unsigned NOT NULL,
   `cuentas_id` bigint(20) unsigned NOT NULL,
-  `referencia` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `monto` decimal(12,2) NOT NULL,
-  `capture` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `estatus` int(11) NOT NULL,
+  `referencia` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `monto` decimal(12,2) DEFAULT NULL,
+  `capture` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `estatus` int(11) NOT NULL DEFAULT '0',
   `tipo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `reembolsos_id` bigint(20) NOT NULL,
+  `reembolsos_id` bigint(20) DEFAULT NULL,
   `users_id` bigint(20) NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -370,6 +370,8 @@ CREATE TABLE IF NOT EXISTS `sessions` (
 
 -- Volcando datos para la tabla demo.sessions: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `sessions` DISABLE KEYS */;
+INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
+	('3YmxGtyhIgP5eev6PShckGSirGn6sAmXUjpTJf4M', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoid2ZybXBRa21sRGt3R05GMmltWTBYT09WOEJ3RTdlWHA1cTFuUXptciI7czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTtzOjE3OiJwYXNzd29yZF9oYXNoX3dlYiI7czo2MDoiJDJ5JDEwJDJ3ckZsRElxNHhRMHRhTXJlRkwxYS5QYWtZMUllTEZtYy5DMWZKVVpKazAxV3hKaWpVb3MyIjtzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czo0NToiaHR0cDovL2RlbW8udGVzdC9sYXJhdmVsL3B1YmxpYy9hZG1pbi9hanVzdGVzIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1614350236);
 /*!40000 ALTER TABLE `sessions` ENABLE KEYS */;
 
 -- Volcando estructura para tabla demo.users
@@ -395,11 +397,11 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `users_email_unique` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla demo.users: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla demo.users: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `two_factor_secret`, `two_factor_recovery_codes`, `remember_token`, `current_team_id`, `profile_photo_path`, `role`, `status`, `permisos`, `plataforma`, `deleted_at`, `created_at`, `updated_at`) VALUES
-	(1, 'Yonathan Castillo', 'leothan522@gmail.com', NULL, '$2y$10$2wrFlDIq4xQ0taMreFL1a.PakY1IeLFmc.C1fJUZJk01WxJijUos2', '04243386600', NULL, '4UMv7YiS9guHXa56Ik13Cm4WO4LjW6l2qzpfcm5kKFPD7YEC5imSWuvIRF5N', NULL, NULL, 100, 1, NULL, '0', NULL, '2020-12-15 15:27:26', '2020-12-15 15:27:26'),
-	(2, 'frank.sierra@gmail.com', 'frank.sierra@gmail.com', NULL, '$2y$10$Z1YDGYUsdhfm9gjEsHsh0.BOFGJcdEqrowjSK00HnY9swgJcBlVRW', '04169309542', NULL, 'vQG0atrJlrk23Hzs1HNV4SI1h5WeAD72rWR9pLM1U5C5EjVIRPTQCySGx5I0', NULL, NULL, 0, 1, NULL, '1', NULL, '2021-02-17 14:26:16', '2021-02-17 14:26:16');
+	(1, 'Yonathan Castillo', 'leothan522@gmail.com', NULL, '$2y$10$2wrFlDIq4xQ0taMreFL1a.PakY1IeLFmc.C1fJUZJk01WxJijUos2', '04243386600', NULL, '4UMv7YiS9guHXa56Ik13Cm4WO4LjW6l2qzpfcm5kKFPD7YEC5imSWuvIRF5N', NULL, NULL, 100, 1, NULL, '0', NULL, '2020-12-15 22:27:26', '2020-12-15 22:27:26'),
+	(2, 'frank.sierra@gmail.com', 'frank.sierra@gmail.com', NULL, '$2y$10$Z1YDGYUsdhfm9gjEsHsh0.BOFGJcdEqrowjSK00HnY9swgJcBlVRW', '04169309542', NULL, 'vQG0atrJlrk23Hzs1HNV4SI1h5WeAD72rWR9pLM1U5C5EjVIRPTQCySGx5I0', NULL, NULL, 0, 1, NULL, '1', NULL, '2021-02-17 21:26:16', '2021-02-17 21:26:16');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 -- Volcando estructura para tabla demo.zonas

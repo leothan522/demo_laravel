@@ -334,6 +334,7 @@ header("Content-Type: application/xml; charset=utf-8");
 <!-- Js Plugins -->
 <script src="{{ asset('ogani/js/jquery-3.3.1.min.js') }}"></script>
 <script src="{{ asset('ogani/js/bootstrap.min.js') }}"></script>
+@yield('nice-select')
 {{--<script src="{{ asset('ogani/js/jquery.nice-select.min.js') }}"></script>--}}
 <script src="{{ asset('ogani/js/jquery-ui.min.js') }}"></script>
 <script src="{{ asset('ogani/js/jquery.slicknav.js') }}"></script>

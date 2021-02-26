@@ -158,7 +158,7 @@
                         {!! Form::close() !!}
                         </div>
 
-                        <table class="table table-hover bg-light mt-3">
+                        <table class="table table-hover bg-light mt-3 table-responsive">
                             <thead class="thead-dark">
                             <tr>
                                 @if (leerJson(Auth::user()->permisos, 'productos.edit') || Auth::user()->role == 100)
