@@ -37,7 +37,7 @@
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="#" class="nav-link lk-">
+                        <a href="{{ route('pedidos.index') }}" class="nav-link lk-">
                             <i class="fa fa-shopping-bag nav-icon"></i>
                             <p>Pedidos</p>
                         </a>

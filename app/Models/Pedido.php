@@ -22,4 +22,9 @@ class Pedido extends Model
         return $this->belongsTo(User::class, 'users_id', 'id');
     }
 
+    public function scopeBuscar($query, $id)
+    {
+        return $query->where('id', 'LIKE', "%$id%");
+    }
+
 }

@@ -48,6 +48,13 @@ function haceCuanto($fecha)
 
 }
 
+function fecha($fecha, $format = null){
+    $carbon = new Carbon();
+    if ($format == null){ $format = "d-m-Y"; }
+    return $carbon->parse($fecha)->format($format);
+}
+
+
 function iconoPlataforma($plataforma)
 {
     if ($plataforma == 0) {
@@ -380,4 +387,19 @@ Comprobaremos si la segunda hora que le pasamos es inferior a la primera, con lo
 Y al final devolveremos true o false dependiendo si el valor introducido se encuentra entre lo que le hemos pasado.*/
 }
 
+function estatusPedido($i = null)
+{
+    $status = [
+        '0' => 'Pendiente de Pago',
+        '1' => 'En Espera',
+        '2' => 'Procesando',
+        '3' => 'Completado',
+        '4' => 'Cancelado'
+    ];
+    if (is_null($i)) {
+        return $status;
+    } else {
+        return $status[$i];
+    }
+}
 

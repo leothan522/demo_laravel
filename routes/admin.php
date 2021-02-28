@@ -38,6 +38,10 @@ Route::middleware(['auth', 'user.status', 'isadmin'])->prefix('/admin')->group(f
         Route::post('/productos/acciones/filtrar', 'Admin\ProductosController@filtrar')->name('productos.filtrar');
         Route::get('/productos/ver/{estado}/productos', 'Admin\ProductosController@ver')->name('productos.ver');
 
+        //Pedidos
+        Route::resource('/pedidos', 'Admin\PedidosController');
+        Route::get('/pedidos/ver/{estado}/pedidos', 'Admin\PedidosController@ver')->name('pedidos.ver');
+
         //Ajustes
         Route::get('/ajustes', 'Admin\AjustesController@index')->name('ajustes.index');
         Route::post('/ajustes', 'Admin\AjustesController@store')->name('ajustes.store');
@@ -54,6 +58,8 @@ Route::middleware(['auth', 'user.status', 'isadmin'])->prefix('/admin')->group(f
 
         //Rutas AJAX
         Route::post('/ajax/metodos', 'Admin\AjustesController@ajaxMetodos')->name('ajax.mpago');
+
+
 
     });
 
