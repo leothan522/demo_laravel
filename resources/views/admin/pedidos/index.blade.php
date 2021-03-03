@@ -213,9 +213,10 @@
                                         {!! Form::open(['route' => ['productos.destroy', $pedido->id], 'method' => 'DELETE', 'id' => 'form_delete_'.$pedido->id]) !!}
                                         <div class="btn-group">
                                             @if (leerJson(Auth::user()->permisos, 'productos.edit') || Auth::user()->role == 100)
-                                                <button type="button" class="btn btn-info" {{--data-toggle="modal" data-target="#modal-{{ $pedido->id }}"--}}>
+                                                {{--<button type="button" class="btn btn-info" --}}{{--data-toggle="modal" data-target="#modal-{{ $pedido->id }}"--}}{{-->
                                                     <i class="fas fa-eye"></i>
-                                                </button>
+                                                </button>--}}
+                                                <a href="{{ route('pedidos.show', $pedido->id) }}" class="btn btn-info"><i class="fas fa-eye"></i></a>
                                                 <button type="button" class="btn btn-info" {{--data-toggle="modal" data-target="#modal-{{ $pedido->id }}"--}}>
                                                     <i class="fas fa-file-pdf"></i>
                                                 </button>

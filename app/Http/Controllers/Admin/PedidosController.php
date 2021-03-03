@@ -65,7 +65,9 @@ class PedidosController extends Controller
      */
     public function show($id)
     {
-        //
+        $pedido = Pedido::find($id);
+        return view('admin.pedidos.show')
+            ->with('pedido', $pedido);
     }
 
     /**
