@@ -48,6 +48,11 @@
                             <li class="list-group-item">
                                 <b>Email</b> <a class="float-right">{{ $user->email }}</a>
                             </li>
+                            @if ($user->two_factor_secret)
+                            <li class="list-group-item">
+                                <b>Teléfono</b> <a class="float-right">{{ $user->two_factor_secret }}</a>
+                            </li>
+                            @endif
                             <li class="list-group-item">
                                 <b>Rol</b> <a class="float-right">{{ role($user->role) }}</a>
                             </li>
