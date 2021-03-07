@@ -330,7 +330,7 @@ class StoreController extends Controller
                     return back();
                 }
             } else {
-                if ($cantidad > $max_carrito) {
+                if (!is_null($max_carrito) && $cantidad > $max_carrito) {
                     $parametros = Parametro::where('nombre', 'carrito')->where('tabla_id', $id)->where('valor', $id_producto)->get();
                     $max = 0;
                     foreach ($parametros as $parametro) {
