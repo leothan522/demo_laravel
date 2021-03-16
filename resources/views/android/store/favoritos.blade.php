@@ -35,7 +35,7 @@
                                         @endif
                                         @if (true /*$i <= 3*/)
                                             @php($primero[$i] = '
-                                                <a href="'.route('android.detalles', [Auth::user()->id, $parametro->valor]).'" class="latest-product__item">
+                                                <a href="'.route('android.detalles', [Auth::user()->id, $parametro->valor]).'" class="latest-product__item" onclick="verCargando();">
                                                     <div class="latest-product__item__pic img-thumbnail">
                                                         <img src="'.asset('img/productos/'.$parametro->file_path.'/'.$parametro->imagen).'" style="width:110px !important;" alt="">
                                                     </div>

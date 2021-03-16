@@ -6,7 +6,8 @@
 
         @foreach($categorias as $categoria)
             <div class="col-md-12">
-                <a href="@if($categoria->disponibles > 0) {{ route('android.categorias.show', [Auth::user()->id, $categoria->id]) }} @else # @endif">
+                <a href="@if($categoria->disponibles > 0) {{ route('android.categorias.show', [Auth::user()->id, $categoria->id]) }} @else # @endif"
+                    onclick="verCargando();">
                     <div class="card card-widget widget-user-2">
                         <div class="widget-user-header bg-info">
                             <div class="widget-user-image">
