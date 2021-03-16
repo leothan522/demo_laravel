@@ -304,7 +304,7 @@
                             <p class="text-justify text-danger">En estos Momentos no tenemos un metodo de pago disponible para tu zona.</p>
                             <button type="submit" class="site-btn" disabled>REGISTRAR PAGO</button>
                             @else
-                            <button type="submit" class="site-btn">REGISTRAR PAGO</button>
+                            <button type="submit" class="site-btn" onclick="verCargando();">REGISTRAR PAGO</button>
                         @endif
                         {{--<div class="checkout__input__checkbox">
                             <label for="paypal">

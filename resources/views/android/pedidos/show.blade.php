@@ -97,7 +97,7 @@
                         </p>
                         @endif
 
-                        <a href="{{ route('android.pedidos', Auth::user()->id) }}" class="btn btn-block site-btn">Cerrar</a>
+                        <a href="{{ route('android.pedidos', Auth::user()->id) }}" class="btn btn-block site-btn" onclick="verCargando();">Cerrar</a>
 
 
                     </div>

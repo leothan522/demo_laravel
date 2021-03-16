@@ -71,9 +71,14 @@
                             @php($total = 0)
                             @foreach ($carrito as $parametro)
                                 @php($i++)
+                                @if($parametro->imagen)
+                                    @php($imagen = asset('img/productos/'.$parametro->file_path.'/t_'.$parametro->imagen))
+                                @else
+                                    @php($imagen = asset('img/img-placeholder-320x320.png'))
+                                @endif
                                 <tr class="remover_{{ $parametro->valor }}">
                                     <td class="{{--shoping__cart__item--}}">
-                                        <img src="{{ asset('img/productos/'.$parametro->file_path.'/t_'.$parametro->imagen) }}" class="img-thumbnail" alt="">
+                                        <img src="{{ $imagen }}" class="img-thumbnail" alt="">
                                         <span>{{ ucwords($parametro->nombre_producto) }}</span>
                                         <span style="font-size: 18px; color: #1c1c1c; font-weight: 700;">${{ formatoMillares($parametro->precio) }}</span>
                                         <input type="hidden" name="id_producto_{{ $i }}" value="{{ $parametro->valor }}">
@@ -171,7 +176,7 @@
                         </ul>
                         <input type="hidden" id="envioCosto" name="paraControl" value="hola" content="hola">
                         <input id="totalPedido" type="hidden" name="total" value="{{ $total }}">
-                        <input type="submit" class="primary-btn btn-block" value="FINALIZAR COMPRA">
+                        <input type="submit" class="primary-btn btn-block" value="FINALIZAR COMPRA" onclick="verCargando();">
                         {{--<a href="{{ route('android.shop_checkout') }}" class="primary-btn">REALIZAR PEDIDO</a>--}}
                     </div>
                 </div>

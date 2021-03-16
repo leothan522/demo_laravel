@@ -1,42 +1,28 @@
 @extends('layouts.android.master-ogani')
 
 @section('content')
-        {{--<div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="float-right">
-                        <div style="margin-top: 16px;">
-                            <a href="./index.html" class="text-muted">Home</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>--}}
+
     <section>
         <div class="container">
-            {{--<div class="row">
-                <div class="col-lg-12">
-                    <div class="float-right">
-                        <div class="m-3">
-                            <a href="javascript:history.back()" class="text-primary"><i class="fa fa-arrow-circle-left"></i> Volver</a>
-                        </div>
-                    </div>
-                </div>
-            </div>--}}
+            @if($producto->imagen)
+                @php($imagen = asset('img/productos/'.$producto->file_path.'/t_'.$producto->imagen))
+            @else
+                @php($imagen = asset('img/img-placeholder-320x320.png'))
+            @endif
             <div class="row">
                 <div class="col-lg-6 col-md-6 mt-3">
                     <div class="product__details__pic">
                         <div class="product__details__pic__item img-thumbnail">
                             <img class="product__details__pic__item--large"
-                                 src="{{ asset('img/productos/'.$producto->file_path.'/t_'.$producto->imagen) }}" alt="">
+                                 src="{{ $imagen }}" alt="">
                         </div>
                         <div class="product__details__pic__slider owl-carousel">
                             @if ($galeria->isNotEmpty())
-                            <img data-imgbigurl="{{ asset('img/productos/'.$producto->file_path.'/t_'.$producto->imagen) }}"
-                                 src="{{ asset('img/productos/'.$producto->file_path.'/t_'.$producto->imagen) }}" class="img-thumbnail" alt="">
-                            @foreach ($galeria as $imagen)
-                                <img data-imgbigurl="{{ asset('img/productos_galeria/'.$imagen->file_path.'/t_'.$imagen->imagen) }}"
-                                     src="{{ asset('img/productos_galeria/'.$imagen->file_path.'/t_'.$imagen->imagen) }}" class="img-thumbnail" alt="">
+                            <img data-imgbigurl="{{ $imagen }}"
+                                 src="{{ $imagen }}" class="img-thumbnail" alt="">
+                            @foreach ($galeria as $gimagen)
+                                <img data-imgbigurl="{{ asset('img/productos_galeria/'.$gimagen->file_path.'/t_'.$gimagen->imagen) }}"
+                                     src="{{ asset('img/productos_galeria/'.$gimagen->file_path.'/t_'.$gimagen->imagen) }}" class="img-thumbnail" alt="">
                             @endforeach
                             @endif
                             {{--<img data-imgbigurl="{{ asset('ogani/img/product/details/product-details-2.jpg') }}"
@@ -129,9 +115,14 @@
             </div>
             <div class="row">
                 @foreach ($relacionados as $producto)
+                    @if($producto->imagen)
+                        @php($imagen = asset('img/productos/'.$producto->file_path.'/t_'.$producto->imagen))
+                    @else
+                        @php($imagen = asset('img/img-placeholder-320x320.png'))
+                    @endif
                     <div class="col-lg-3 col-md-4 col-sm-6">
                         <div class="product__item">
-                            <div class="product__item__pic set-bg img-thumbnail" data-setbg="{{ asset('img/productos/'.$producto->file_path.'/t_'.$producto->imagen) }}">
+                            <div class="product__item__pic set-bg img-thumbnail" data-setbg="{{ $imagen }}">
                                 <ul class="product__item__pic__hover">
                                     <li>
                                         <a href="#" id="favoritos_{{ $producto->id }}" content="{{ $producto->id }}"
@@ -139,12 +130,12 @@
                                             <i class="fa fa-heart"></i>
                                         </a>
                                     </li>
-                                    <li><a href="{{ route('android.detalles', [Auth::user()->id, $producto->id]) }}"><i class="fa fa-eye"></i></a></li>
+                                    <li><a href="{{ route('android.detalles', [Auth::user()->id, $producto->id]) }}" onclick="verCargando();"><i class="fa fa-eye"></i></a></li>
                                     <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
                                 </ul>
                             </div>
                             <div class="product__item__text">
-                                <h6><a href="{{ route('android.detalles', [Auth::user()->id, $producto->id]) }}">{{ ucwords($producto->nombre) }}</a></h6>
+                                <h6><a href="{{ route('android.detalles', [Auth::user()->id, $producto->id]) }}" onclick="verCargando();">{{ ucwords($producto->nombre) }}</a></h6>
                                 @if ($producto->visibilidad && $producto->descuento)
                                     <h5>${{ formatoMillares($producto->precio - $producto->descuento) }}</h5>
                                     <h5>{{ precioBolivares($producto->precio - $producto->descuento) }}</h5>

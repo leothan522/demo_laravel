@@ -13,9 +13,11 @@
                                 <div class="latest-product__slider owl-carousel">
                                     @php($primero = [])
                                     @foreach ($favoritos as $parametro)
+
                                         @if ($parametro->precio < 0 || !$parametro->estado)
                                             @continue(true)
                                         @endif
+
                                         @if ($parametro->cant_inventario)
                                             @if ($parametro->visibilidad && $parametro->descuento)
                                                 @php($precio = '
@@ -33,11 +35,18 @@
                                                     <span class="text-danger">Producto agotado</span>
                                                 ')
                                         @endif
+
+                                        @if($parametro->imagen)
+                                            @php($imagen = asset('img/productos/'.$parametro->file_path.'/'.$parametro->imagen))
+                                        @else
+                                            @php($imagen = asset('img/img-placeholder-320x320.png'))
+                                        @endif
+
                                         @if (true /*$i <= 3*/)
                                             @php($primero[$i] = '
-                                                <a href="'.route('android.detalles', [Auth::user()->id, $parametro->valor]).'" class="latest-product__item">
+                                                <a href="'.route('android.detalles', [Auth::user()->id, $parametro->valor]).'" class="latest-product__item" onclick="verCargando();">
                                                     <div class="latest-product__item__pic img-thumbnail">
-                                                        <img src="'.asset('img/productos/'.$parametro->file_path.'/'.$parametro->imagen).'" style="width:110px !important;" alt="">
+                                                        <img src="'.$imagen.'" style="width:110px !important;" alt="">
                                                     </div>
                                                     <div class="latest-product__item__text">
                                                         <h6>'.ucwords($parametro->nombre_producto).'</h6>

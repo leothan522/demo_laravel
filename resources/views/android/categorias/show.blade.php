@@ -40,11 +40,18 @@
                                                     <span class="text-danger">Producto agotado</span>
                                                 ')
                                         @endif
+
+                                        @if($producto->imagen)
+                                            @php($imagen = asset('img/productos/'.$producto->file_path.'/'.$producto->imagen))
+                                        @else
+                                            @php($imagen = asset('img/img-placeholder-320x320.png'))
+                                        @endif
+
                                         @if ($i <= 3)
                                             @php($primero[$i] = '
-                                                <a href="'.route('android.detalles', [Auth::user()->id, $producto->id]).'" class="latest-product__item">
+                                                <a href="'.route('android.detalles', [Auth::user()->id, $producto->id]).'" class="latest-product__item" onclick="verCargando();">
                                                     <div class="latest-product__item__pic img-thumbnail">
-                                                        <img src="'.asset('img/productos/'.$producto->file_path.'/'.$producto->imagen).'" style="width:110px !important;" alt="">
+                                                        <img src="'.$imagen.'" style="width:110px !important;" alt="">
                                                     </div>
                                                     <div class="latest-product__item__text">
                                                         <h6>'.ucwords($producto->nombre).'</h6>
@@ -54,9 +61,9 @@
                                             ')
                                         @else
                                             @php($segundo[$i] = '
-                                                <a href="'.route('android.detalles', [Auth::user()->id, $producto->id]).'" class="latest-product__item">
+                                                <a href="'.route('android.detalles', [Auth::user()->id, $producto->id]).'" class="latest-product__item" onclick="verCargando();">
                                                     <div class="latest-product__item__pic img-thumbnail">
-                                                        <img src="'.asset('img/productos/'.$producto->file_path.'/'.$producto->imagen).'" style="width:110px !important;" alt="">
+                                                        <img src="'.$imagen.'" style="width:110px !important;" alt="">
                                                     </div>
                                                     <div class="latest-product__item__text">
                                                         <h6>'.ucwords($producto->nombre).'</h6>
@@ -151,10 +158,17 @@
                             <div class="row">
                                 <div class="product__discount__slider owl-carousel">
                                     @foreach ($en_oferta as $producto)
+
+                                        @if($producto->imagen)
+                                            @php($imagen = asset('img/productos/'.$producto->file_path.'/t_'.$producto->imagen))
+                                        @else
+                                            @php($imagen = asset('img/img-placeholder-320x320.png'))
+                                        @endif
+
                                         <div class="col-lg-4">
                                             <div class="product__discount__item">
                                                 <div class="product__discount__item__pic set-bg img-thumbnail"
-                                                     data-setbg="{{ asset('img/productos/'.$producto->file_path.'/t_'.$producto->imagen) }}">
+                                                     data-setbg="{{ $imagen }}">
                                                     <div class="product__discount__percent">-{{ formatoMillares(obtenerPorcentaje($producto->descuento, $producto->precio), 0) }}%</div>
                                                     <ul class="product__item__pic__hover">
                                                         <li>
@@ -163,7 +177,7 @@
                                                                 <i class="fa fa-heart"></i>
                                                             </a>
                                                         </li>
-                                                        <li><a href="{{ route('android.detalles', [Auth::user()->id, $producto->id]) }}"><i class="fa fa-eye"></i></a></li>
+                                                        <li><a href="{{ route('android.detalles', [Auth::user()->id, $producto->id]) }}" onclick="verCargando();"><i class="fa fa-eye"></i></a></li>
                                                         <li>
                                                             <a href="#" content="{{ $producto->id }}"
                                                                class="btn_carrito  carrito_{{ $producto->id }} @if ($producto->carrito) fondo-favoritos @endif">
@@ -308,9 +322,16 @@
                     <div class="row">
 
                         @foreach ($productos as $producto)
+
+                            @if($producto->imagen)
+                                @php($imagen = asset('img/productos/'.$producto->file_path.'/t_'.$producto->imagen))
+                            @else
+                                @php($imagen = asset('img/img-placeholder-320x320.png'))
+                            @endif
+
                             <div class="col-lg-4 col-md-6 col-sm-6">
                                 <div class="product__item">
-                                    <div class="product__item__pic set-bg img-thumbnail" data-setbg="{{ asset('img/productos/'.$producto->file_path.'/t_'.$producto->imagen) }}">
+                                    <div class="product__item__pic set-bg img-thumbnail" data-setbg="{{ $imagen }}">
                                         <ul class="product__item__pic__hover">
                                             <li>
                                                 <a href="#" id="favoritos_{{ $producto->id }}" content="{{ $producto->id }}"
@@ -318,7 +339,7 @@
                                                     <i class="fa fa-heart"></i>
                                                 </a>
                                             </li>
-                                            <li><a href="{{ route('android.detalles', [Auth::user()->id, $producto->id]) }}"><i class="fa fa-eye"></i></a></li>
+                                            <li><a href="{{ route('android.detalles', [Auth::user()->id, $producto->id]) }}" onclick="verCargando();"><i class="fa fa-eye"></i></a></li>
                                             <li>
                                                 <a href="#" id="carrito_{{ $producto->id }}" content="{{ $producto->id }}"
                                                    class="btn_carrito @if ($producto->carrito) fondo-favoritos @endif">

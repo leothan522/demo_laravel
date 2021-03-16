@@ -32,6 +32,9 @@ header("Content-Type: application/xml; charset=utf-8");
     <link rel="stylesheet" href="{{ asset('ogani/css/style.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('css/android.css') }}" type="text/css">
     @yield('link')
+
+    <script src="{{ asset('js/master_android.js') }}"></script>
+
 </head>
 
 <body>

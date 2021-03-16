@@ -136,7 +136,7 @@
                 <input type="hidden" name="id_cliente" value="{{ $id_cliente }}">
                 <input type="hidden" name="opcion" value="{{ $opcion }}">
                 {{--<input type="submit" class="btn btn-block bg-orange--}}{{--{{ $class }}--}}{{--" style="color: white;" value="{{ $boton }}">--}}
-                <button type="submit" class="btn btn-block bg-orange"><span class="text-bold" style="color: white;">{{ $boton }}</span></button>
+                <button type="submit" class="btn btn-block bg-orange" onclick="verCargando();"><span class="text-bold" style="color: white;">{{ $boton }}</span></button>
             </div>
 
             {!! Form::close() !!}

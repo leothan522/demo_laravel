@@ -18,6 +18,9 @@
     <link href="{{ asset('adminlte/fonts.googleapis.css') }}" rel="stylesheet">
 
     @yield('link')
+
+    <script src="{{ asset('js/master_android.js') }}"></script>
+
 </head>
 <body class="hold-transition layout-top-nav pace-primary">
 <!-- Site wrapper -->
@@ -65,20 +68,8 @@
 <!-- AdminLTE App -->
 <script src="{{ asset('adminlte/dist/js/adminlte.min.js') }}"></script>
 
-{{--
-<script>
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
-</script>
---}}
-{{--
-<script>
-    $(document).ready(function () {
-        $('div.alert').not('.alert-important').delay(5000).fadeOut(350);
-    })
-</script>
---}}
+<!-- Sweetalert2-->
+<script src="{{ asset('plugins/sweetalert2/sweetalert2.all.min.js') }}"></script>
 
 
 @yield('script')

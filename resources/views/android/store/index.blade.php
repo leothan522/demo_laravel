@@ -60,57 +60,6 @@
     </section>
     <!-- Hero Section End -->
 
-    <!-- Categories Section Begin -->
-    {{--@if (!$categorias->isEmpty())
-        <section class="categories">
-            <div class="container">
-                <div class="row">
-                    <div class="categories__slider owl-carousel">
-                        @foreach ($categorias as $categoria)
-                            <div class="col-lg-3">
-                                <div class="categories__item set-bg img-thumbnail" style="border-radius: 10px;"
-                                     @if ($categoria->imagen)
-                                     data-setbg="{{ asset('img/categorias/'.$categoria->file_path.'/'.$categoria->imagen) }}">
-                                    @else
-                                        data-setbg="{{ asset('img/img-placeholder-320x320.png') }}">
-                                    @endif
-                                    <h5>
-                                        <a href="{{ route('android.categorias', [Auth::user()->id, $categoria->id]) }}">{{ $categoria->nombre }}</a>
-                                    </h5>
-                                </div>
-                            </div>
-                        @endforeach
-                        --}}{{--<div class="col-lg-3">
-                            <div class="categories__item set-bg" data-setbg="{{ asset('ogani/img/categories/cat-1.jpg') }}">
-                                <h5><a href="{{ route('android.shop_grid') }}">Fresh Fruit</a></h5>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="categories__item set-bg" data-setbg="{{ asset('ogani/img/categories/cat-2.jpg') }}">
-                                <h5><a href="{{ route('android.shop_grid') }}">Dried Fruit</a></h5>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="categories__item set-bg" data-setbg="{{ asset('ogani/img/categories/cat-3.jpg') }}">
-                                <h5><a href="{{ route('android.shop_grid') }}">Vegetables</a></h5>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="categories__item set-bg" data-setbg="{{ asset('ogani/img/categories/cat-4.jpg') }}">
-                                <h5><a href="{{ route('android.shop_grid') }}">drink fruits</a></h5>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="categories__item set-bg" data-setbg="{{ asset('ogani/img/categories/cat-5.jpg') }}">
-                                <h5><a href="{{ route('android.shop_grid') }}">drink fruits</a></h5>
-                            </div>
-                        </div>--}}{{--
-                    </div>
-                </div>
-            </div>
-        </section>
-    @endif--}}
-    <!-- Categories Section End -->
     @if (!$ultimos_productos->isEmpty())
         <section class="latest-product spad">
             <div class="container">
@@ -121,6 +70,7 @@
                             <div class="latest-product__slider owl-carousel">
                                 @php($primero = [])
                                 @foreach ($ultimos_productos as $producto)
+
                                     @if ($producto->cant_inventario)
                                         @if ($producto->visibilidad && $producto->descuento)
                                             @php($precio = '
@@ -139,11 +89,17 @@
                                             ')
                                     @endif
 
+                                    @if($producto->imagen)
+                                        @php($imagen = asset('img/productos/'.$producto->file_path.'/'.$producto->imagen))
+                                        @else
+                                        @php($imagen = asset('img/img-placeholder-320x320.png'))
+                                    @endif
+
                                     @if ($i <= 3)
                                         @php($primero[$i] = '
-                                            <a href="'.route('android.detalles', [Auth::user()->id, $producto->id]).'" class="latest-product__item">
+                                            <a href="'.route('android.detalles', [Auth::user()->id, $producto->id]).'" class="latest-product__item" onclick="verCargando();">
                                             <div class="latest-product__item__pic img-thumbnail">
-                                                <img src="'.asset('img/productos/'.$producto->file_path.'/'.$producto->imagen).'" style="width:110px !important;" alt="">
+                                                <img src="'.$imagen.'" style="width:110px !important;" alt="">
                                             </div>
                                             <div class="latest-product__item__text">
                                                 <h6>'.ucwords($producto->nombre).'</h6>
@@ -153,9 +109,9 @@
                                         ')
                                     @else
                                         @php($segundo[$i] = '
-                                            <a href="'.route('android.detalles', [Auth::user()->id, $producto->id]).'" class="latest-product__item">
+                                            <a href="'.route('android.detalles', [Auth::user()->id, $producto->id]).'" class="latest-product__item" onclick="verCargando();">
                                         <div class="latest-product__item__pic img-thumbnail">
-                                            <img src="'.asset('img/productos/'.$producto->file_path.'/'.$producto->imagen).'" style="width:110px !important;" alt="">
+                                            <img src="'.$imagen.'" style="width:110px !important;" alt="">
                                         </div>
                                         <div class="latest-product__item__text">
                                             <h6>'.ucwords($producto->nombre).'</h6>
@@ -344,10 +300,15 @@
             </div>
             <div class="row featured__filter">
                 @foreach ($productos as $producto)
+                    @if($producto->imagen)
+                        @php($imagen = asset('img/productos/'.$producto->file_path.'/t_'.$producto->imagen))
+                    @else
+                        @php($imagen = asset('img/img-placeholder-320x320.png'))
+                    @endif
                     <div class="col-lg-3 col-md-4 col-sm-6 mix {{ $producto->categorias->slug }}">
                         <div class="featured__item">
                             <div class="featured__item__pic set-bg img-thumbnail"
-                                 data-setbg="{{ asset('img/productos/'.$producto->file_path.'/t_'.$producto->imagen) }}">
+                                 data-setbg="{{ $imagen }}">
                                 <ul class="featured__item__pic__hover">
                                     <li>
                                         <a href="#" id="favoritos_{{ $producto->id }}" content="{{ $producto->id }}"
@@ -355,7 +316,7 @@
                                             <i class="fa fa-heart"></i>
                                         </a>
                                     </li>
-                                    <li><a href="{{ route('android.detalles', [Auth::user()->id, $producto->id]) }}"><i
+                                    <li><a href="{{ route('android.detalles', [Auth::user()->id, $producto->id]) }}" onclick="verCargando();"><i
                                                 class="fa fa-eye"></i></a></li>
                                     <li>
                                         <a href="#" id="carrito_{{ $producto->id }}" content="{{ $producto->id }}"
