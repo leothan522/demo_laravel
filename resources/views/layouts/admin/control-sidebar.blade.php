@@ -33,6 +33,11 @@
             </a>
         </li>
         <li class="nav-item">
+            <a href="{{ route('android.categorias', Auth::user()->id) }}" class="nav-link" target="_blank">
+                <i class="fa fa-cash-register"></i> Categorias
+            </a>
+        </li>
+        <li class="nav-item">
             <a href="{{ route('android.no_definida', Auth::user()->id) }}" class="nav-link" target="_blank">
                 <i class="fa fa-ban"></i> No Definida
             </a>

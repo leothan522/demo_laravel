@@ -209,7 +209,7 @@
     </section>
     @endif
     <!-- Related Product Section End -->
-        <div class="row">
+        {{--<div class="row">
             <div class="col-lg-12">
                 <div class="float-left">
                     <div class="m-3">
@@ -217,7 +217,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>--}}
         <br/>
 @endsection
 

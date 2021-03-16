@@ -56,7 +56,8 @@ Route::middleware('android')->prefix('/android')->group(function (){
 
     // Rutas APP
     Route::get('/ruta/no/definida/{id?}', function () {
-        return view('android.prueba');
+        //return view('android.prueba');
+        return redirect()->route('android.categorias', Auth::user()->id);
     })->name('android.no_definida');
 
     //Facturacion y envio
@@ -65,13 +66,17 @@ Route::middleware('android')->prefix('/android')->group(function (){
 
     //store
     Route::get('/store/{id}', 'Android\StoreController@index')->name('android.store.index');
-    Route::get('/categorias/{id}/{categoria}/{store?}', 'Android\StoreController@categorias')->name('android.categorias');
     Route::get('/detalles/{id}/{producto}', 'Android\StoreController@detalles')->name('android.detalles');
     Route::get('/favoritos/{id}', 'Android\StoreController@favoritos')->name('android.favoritos');
     Route::get('/carrito/{id}', 'Android\StoreController@carrito')->name('android.carrito');
     Route::post('/carrito/{id}', 'Android\StoreController@guardarPedido')->name('android.carrito.checkout');
     Route::get('/checkout/{id}', 'Android\StoreController@checkout')->name('android.checkout');
     Route::post('/checkout/{id}', 'Android\StoreController@checkoutStore')->name('android.checkout.store');
+
+    //Categorias
+    Route::get('/categorias/{id}/', 'Android\CategoriasController@index')->name('android.categorias');
+    Route::get('/categorias/{id}/{categoria}', 'Android\CategoriasController@show')->name('android.categorias.show');
+
 
     //pedidos
     Route::get('/pedidos/{id}', 'Android\PedidosController@index')->name('android.pedidos');
