@@ -31,19 +31,26 @@ class CategoriasController extends Controller
     {
         $autenticar = new AppController();
         $autenticar->autenticar($id);
+
         $ultimos_productos = Producto::where('categorias_id', $categoria)->where('precio', '>', 0)->orderBy('updated_at', 'DESC')->paginate(6);
         $en_oferta = Producto::where('visibilidad', 1)->where('precio', '>', 0)->where('estado', 1)->where('cant_inventario', '>', 0)->orderBy('updated_at', 'DESC')->get();
         $en_oferta->each(function ($producto) {
             $producto->favoritos = Parametro::where('nombre', 'favoritos')->where('tabla_id', Auth::user()->id)->where('valor', $producto->id)->first();
             $producto->carrito = Parametro::where('nombre', 'carrito')->where('tabla_id', Auth::user()->id)->where('valor', $producto->id)->first();
         });
+
         $productos = Producto::where('categorias_id', $categoria)->where('precio', '>', 0)->get();
         $productos->each(function ($producto) {
             $producto->favoritos = Parametro::where('nombre', 'favoritos')->where('tabla_id', Auth::user()->id)->where('valor', $producto->id)->first();
             $producto->carrito = Parametro::where('nombre', 'carrito')->where('tabla_id', Auth::user()->id)->where('valor', $producto->id)->first();
         });
+
         $total = $productos->count();
+
+        $ver_categoria = Categoria::find($categoria);
+
         return view('android.categorias.show')
+            ->with('categoria', $ver_categoria)
             ->with('ultimos_productos', $ultimos_productos)
             ->with('en_oferta', $en_oferta)
             ->with('productos', $productos)

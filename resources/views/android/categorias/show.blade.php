@@ -3,17 +3,15 @@
 @section('content')
     <section class="mt-3">
         <div class="container">
-            @if (false /*!$store*/)
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="float-right">
-                            <div class="m-3">
-                                <a href="{{ route('android.store.index', Auth::user()->id)  }}" class="text-primary"><i class="fa fa-arrow-circle-left"></i> Store</a>
-                            </div>
-                        </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title">
+                        <h2>{{ strtoupper($categoria->nombre) }}</h2>
                     </div>
                 </div>
-            @endif
+            </div>
+
             <div class="row">
                 <div class="col-lg-3 col-md-5 mt-3">
                     @if (!$ultimos_productos->isEmpty())
