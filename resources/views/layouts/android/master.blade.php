@@ -18,20 +18,6 @@
     <link href="{{ asset('adminlte/fonts.googleapis.css') }}" rel="stylesheet">
 
     @yield('link')
-
-    <!-- jQuery -->
-    <script src="{{ asset('adminlte/plugins/jquery/jquery.min.js') }}"></script>
-    <!-- Bootstrap 4 -->
-    <script src="{{ asset('adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <!-- pace-progress -->
-    <script src="{{ asset('adminlte/plugins/pace-progress/pace.min.js') }}"></script>
-    <!-- AdminLTE App -->
-    <script src="{{ asset('adminlte/dist/js/adminlte.min.js') }}"></script>
-
-    <script src="{{ asset('js/master_android.js') }}"></script>
-
-    @yield('script')
-
 </head>
 <body class="hold-transition layout-top-nav pace-primary">
 <!-- Site wrapper -->
@@ -70,7 +56,7 @@
 </div>
 <!-- ./wrapper -->
 
-{{--<!-- jQuery -->
+<!-- jQuery -->
 <script src="{{ asset('adminlte/plugins/jquery/jquery.min.js') }}"></script>
 <!-- Bootstrap 4 -->
 <script src="{{ asset('adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
@@ -79,6 +65,22 @@
 <!-- AdminLTE App -->
 <script src="{{ asset('adminlte/dist/js/adminlte.min.js') }}"></script>
 
-@yield('script')--}}
+{{--
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
+--}}
+{{--
+<script>
+    $(document).ready(function () {
+        $('div.alert').not('.alert-important').delay(5000).fadeOut(350);
+    })
+</script>
+--}}
+
+
+@yield('script')
 </body>
 </html>

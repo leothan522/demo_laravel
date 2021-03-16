@@ -62,7 +62,7 @@
                                     @else
                                     {{ route('android.pedidos.show', [Auth::user()->id, $pedido->id]) }}
                                     @endif
-                                    " class="nav-link" onclick="verCargando();">
+                                    " class="nav-link">
                                     {{--<i class="fas fa-flag"></i>--}}
                                     {{ $i }}.- Pedido <b>#{{ $pedido->id }}</b>
                                     <small> ({{ haceCuanto($pedido->created_at) }})</small>

@@ -32,27 +32,6 @@ header("Content-Type: application/xml; charset=utf-8");
     <link rel="stylesheet" href="{{ asset('ogani/css/style.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('css/android.css') }}" type="text/css">
     @yield('link')
-
-
-    <!-- Js Plugins -->
-    <script src="{{ asset('ogani/js/jquery-3.3.1.min.js') }}"></script>
-    <script src="{{ asset('ogani/js/bootstrap.min.js') }}"></script>
-    @yield('nice-select')
-    {{--<script src="{{ asset('ogani/js/jquery.nice-select.min.js') }}"></script>--}}
-    <script src="{{ asset('ogani/js/jquery-ui.min.js') }}"></script>
-    <script src="{{ asset('ogani/js/jquery.slicknav.js') }}"></script>
-    <script src="{{ asset('ogani/js/mixitup.min.js') }}"></script>
-    <script src="{{ asset('ogani/js/owl.carousel.min.js') }}"></script>
-    <script src="{{ asset('ogani/js/main.js') }}"></script>
-
-    <!-- Sweetalert2-->
-    <script src="{{ asset('plugins/sweetalert2/sweetalert2.all.min.js') }}"></script>
-
-    <script src="{{ asset('js/master_android.js') }}"></script>
-
-
-    @yield('script')
-
 </head>
 
 <body>
@@ -352,11 +331,11 @@ header("Content-Type: application/xml; charset=utf-8");
 </footer>--}}
 <!-- Footer Section End -->
 
-{{--<!-- Js Plugins -->
+<!-- Js Plugins -->
 <script src="{{ asset('ogani/js/jquery-3.3.1.min.js') }}"></script>
 <script src="{{ asset('ogani/js/bootstrap.min.js') }}"></script>
 @yield('nice-select')
---}}{{--<script src="{{ asset('ogani/js/jquery.nice-select.min.js') }}"></script>--}}{{--
+{{--<script src="{{ asset('ogani/js/jquery.nice-select.min.js') }}"></script>--}}
 <script src="{{ asset('ogani/js/jquery-ui.min.js') }}"></script>
 <script src="{{ asset('ogani/js/jquery.slicknav.js') }}"></script>
 <script src="{{ asset('ogani/js/mixitup.min.js') }}"></script>
@@ -367,7 +346,7 @@ header("Content-Type: application/xml; charset=utf-8");
 <script src="{{ asset('plugins/sweetalert2/sweetalert2.all.min.js') }}"></script>
 
 
-@yield('script')--}}
+@yield('script')
 </body>
 
 </html>

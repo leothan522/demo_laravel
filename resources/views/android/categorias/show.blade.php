@@ -42,7 +42,7 @@
                                         @endif
                                         @if ($i <= 3)
                                             @php($primero[$i] = '
-                                                <a href="'.route('android.detalles', [Auth::user()->id, $producto->id]).'" class="latest-product__item" onclick="verCargando();">
+                                                <a href="'.route('android.detalles', [Auth::user()->id, $producto->id]).'" class="latest-product__item">
                                                     <div class="latest-product__item__pic img-thumbnail">
                                                         <img src="'.asset('img/productos/'.$producto->file_path.'/'.$producto->imagen).'" style="width:110px !important;" alt="">
                                                     </div>
@@ -54,7 +54,7 @@
                                             ')
                                         @else
                                             @php($segundo[$i] = '
-                                                <a href="'.route('android.detalles', [Auth::user()->id, $producto->id]).'" class="latest-product__item" onclick="verCargando();">
+                                                <a href="'.route('android.detalles', [Auth::user()->id, $producto->id]).'" class="latest-product__item">
                                                     <div class="latest-product__item__pic img-thumbnail">
                                                         <img src="'.asset('img/productos/'.$producto->file_path.'/'.$producto->imagen).'" style="width:110px !important;" alt="">
                                                     </div>
@@ -163,7 +163,7 @@
                                                                 <i class="fa fa-heart"></i>
                                                             </a>
                                                         </li>
-                                                        <li><a href="{{ route('android.detalles', [Auth::user()->id, $producto->id]) }}" onclick="verCargando();"><i class="fa fa-eye"></i></a></li>
+                                                        <li><a href="{{ route('android.detalles', [Auth::user()->id, $producto->id]) }}"><i class="fa fa-eye"></i></a></li>
                                                         <li>
                                                             <a href="#" content="{{ $producto->id }}"
                                                                class="btn_carrito  carrito_{{ $producto->id }} @if ($producto->carrito) fondo-favoritos @endif">
