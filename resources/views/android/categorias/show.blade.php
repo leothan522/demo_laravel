@@ -7,7 +7,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title">
-                        <h2>{{ strtoupper($categoria->nombre) }}</h2>
+                        <h2>{{ ucwords($categoria->nombre) }}</h2>
                     </div>
                 </div>
             </div>
