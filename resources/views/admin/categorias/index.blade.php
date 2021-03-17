@@ -208,14 +208,15 @@
                                     <th scope="row" class="text-center">{{ $categoria->id }}</th>
                                     <td class="text-center">
                                         <div class="product-img">
-                                            <a href="@if ($categoria->imagen != null){{ asset('img/categorias/'.$categoria->file_path.'/'.$categoria->imagen) }}
-                                                @else
-                                                {{ asset('img/img-placeholder-320x320.png') }}
-                                            @endif" data-fancybox data-caption="{{ ucwords($categoria->nombre) }}">
-                                                <img src="@if ($categoria->imagen != null){{ asset('img/categorias/'.$categoria->file_path.'/t_'.$categoria->imagen) }}
-                                                @else
-                                                {{ asset('img/img-placeholder-320x320.png') }}
-                                                @endif" alt="Categoria Imagen" class="img-size-50">
+                                            @if (!is_null($categoria->imagen) && file_exists('img/categorias/'.$categoria->file_path.'/'.$categoria->imagen))
+                                                @php($imagen = asset('img/categorias/'.$categoria->file_path.'/'.$categoria->imagen))
+                                                @php($imagen_t = asset('img/categorias/'.$categoria->file_path.'/t_'.$categoria->imagen))
+                                            @else
+                                                @php($imagen = asset('img/img-placeholder-320x320.png'))
+                                                @php($imagen_t = asset('img/img-placeholder-320x320.png'))
+                                            @endif
+                                            <a href="{{ $imagen }}" data-fancybox data-caption="{{ ucwords($categoria->nombre) }}">
+                                                <img src="{{ $imagen_t }}" alt="Categoria Imagen" class="img-size-50">
                                             </a>
                                         </div>
                                     </td>

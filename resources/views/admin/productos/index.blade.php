@@ -195,14 +195,13 @@
                                     @endif
                                     <td class="text-center">
                                         <div class="product-img">
-                                            <a href="@if ($producto->imagen != null){{ asset('img/productos/'.$producto->file_path.'/'.$producto->imagen) }}
+                                            @if (!is_null($producto->imagen) && file_exists('img/productos/'.$producto->file_path.'/'.$producto->imagen))
+                                                @php($imagen = asset('img/productos/'.$producto->file_path.'/'.$producto->imagen))
                                             @else
-                                            {{ asset('img/img-placeholder-320x320.png') }}
-                                            @endif" data-fancybox data-caption="{{ ucwords($producto->nombre) }}">
-                                                <img src="@if ($producto->imagen != null){{ asset('img/productos/'.$producto->file_path.'/t_'.$producto->imagen) }}
-                                                @else
-                                                {{ asset('img/img-placeholder-320x320.png') }}
-                                                @endif" alt="Producto Imagen" class="img-size-50">
+                                                @php($imagen = asset('img/img-placeholder-320x320.png'))
+                                            @endif
+                                            <a href="{{ $imagen }}" data-fancybox data-caption="{{ ucwords($producto->nombre) }}">
+                                                <img src="{{ $imagen }}" alt="Producto Imagen" class="img-size-50">
                                             </a>
                                         </div>
                                     </td>

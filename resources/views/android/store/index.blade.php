@@ -89,9 +89,9 @@
                                             ')
                                     @endif
 
-                                    @if($producto->imagen)
+                                    @if (!is_null($producto->imagen) && file_exists('img/productos/'.$producto->file_path.'/'.$producto->imagen))
                                         @php($imagen = asset('img/productos/'.$producto->file_path.'/'.$producto->imagen))
-                                        @else
+                                    @else
                                         @php($imagen = asset('img/img-placeholder-320x320.png'))
                                     @endif
 
@@ -300,11 +300,12 @@
             </div>
             <div class="row featured__filter">
                 @foreach ($productos as $producto)
-                    @if($producto->imagen)
+                    @if (!is_null($producto->imagen) && file_exists('img/productos/'.$producto->file_path.'/t_'.$producto->imagen))
                         @php($imagen = asset('img/productos/'.$producto->file_path.'/t_'.$producto->imagen))
                     @else
                         @php($imagen = asset('img/img-placeholder-320x320.png'))
                     @endif
+
                     <div class="col-lg-3 col-md-4 col-sm-6 mix {{ $producto->categorias->slug }}">
                         <div class="featured__item">
                             <div class="featured__item__pic set-bg img-thumbnail"

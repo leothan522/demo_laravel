@@ -4,7 +4,7 @@
 
     <section>
         <div class="container">
-            @if($producto->imagen)
+            @if (!is_null($producto->imagen) && file_exists('img/productos/'.$producto->file_path.'/t_'.$producto->imagen))
                 @php($imagen = asset('img/productos/'.$producto->file_path.'/t_'.$producto->imagen))
             @else
                 @php($imagen = asset('img/img-placeholder-320x320.png'))
@@ -131,7 +131,12 @@
                                         </a>
                                     </li>
                                     <li><a href="{{ route('android.detalles', [Auth::user()->id, $producto->id]) }}" onclick="verCargando();"><i class="fa fa-eye"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                    <li>
+                                        <a href="#" id="carrito_{{ $producto->id }}" content="{{ $producto->id }}"
+                                           class="btn_carrito @if ($producto->carrito) fondo-favoritos @endif">
+                                            <i class="fa fa-shopping-cart"></i>
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="product__item__text">
@@ -298,4 +303,8 @@
         });
 
     </script>
+@endsection
+
+@section('nice-select')
+    <script src="{{ asset('ogani/js/jquery.nice-select.min.js') }}"></script>
 @endsection

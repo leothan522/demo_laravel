@@ -36,7 +36,7 @@
                                                 ')
                                         @endif
 
-                                        @if($parametro->imagen)
+                                        @if (!is_null($parametro->imagen) && file_exists('img/productos/'.$parametro->file_path.'/'.$parametro->imagen))
                                             @php($imagen = asset('img/productos/'.$parametro->file_path.'/'.$parametro->imagen))
                                         @else
                                             @php($imagen = asset('img/img-placeholder-320x320.png'))

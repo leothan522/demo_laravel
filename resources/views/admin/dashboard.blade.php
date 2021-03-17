@@ -410,7 +410,12 @@
                     @foreach ($recientes as $reciente)
                         <li class="item">
                         <div class="product-img">
-                            <img src="{{ asset('img/productos/'.$reciente->file_path.'/t_'.$reciente->imagen) }}" alt="Producto Imagen" class="img-size-50">
+                            @if (!is_null($reciente->imagen) && file_exists('img/productos/'.$reciente->file_path.'/t_'.$reciente->imagen))
+                                @php($imagen = asset('img/productos/'.$reciente->file_path.'/t_'.$reciente->imagen))
+                                @else
+                                @php($imagen = asset('img/img-placeholder-320x320.png'))
+                            @endif
+                            <img src="{{ $imagen }}" alt="Producto Imagen" class="img-size-50">
                         </div>
                         <div class="product-info">
                             <a href="{{ route('productos.index', ['buscar' => $reciente->nombre]) }}" class="product-title">{{ ucwords($reciente->nombre) }}

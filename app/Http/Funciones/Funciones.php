@@ -146,7 +146,9 @@ function crearMiniaturas($path, $file_path, $file_name)
 //Borrar archivos
 function borrarArchivos($path, $file_path, $file_name)
 {
-    return unlink(public_path() . '' . $path . '/' . $file_path . '/' . $file_name);
+    if (file_exists(public_path() . '' . $path . '/' . $file_path . '/' . $file_name)){
+        return unlink(public_path() . '' . $path . '/' . $file_path . '/' . $file_name);
+    }
 }
 
 //Estados de los Productos

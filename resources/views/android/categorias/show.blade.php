@@ -41,7 +41,7 @@
                                                 ')
                                         @endif
 
-                                        @if($producto->imagen)
+                                        @if (!is_null($producto->imagen) && file_exists('img/productos/'.$producto->file_path.'/'.$producto->imagen))
                                             @php($imagen = asset('img/productos/'.$producto->file_path.'/'.$producto->imagen))
                                         @else
                                             @php($imagen = asset('img/img-placeholder-320x320.png'))
@@ -159,7 +159,7 @@
                                 <div class="product__discount__slider owl-carousel">
                                     @foreach ($en_oferta as $producto)
 
-                                        @if($producto->imagen)
+                                        @if (!is_null($producto->imagen) && file_exists('img/productos/'.$producto->file_path.'/t_'.$producto->imagen))
                                             @php($imagen = asset('img/productos/'.$producto->file_path.'/t_'.$producto->imagen))
                                         @else
                                             @php($imagen = asset('img/img-placeholder-320x320.png'))
@@ -323,7 +323,7 @@
 
                         @foreach ($productos as $producto)
 
-                            @if($producto->imagen)
+                            @if (!is_null($producto->imagen) && file_exists('img/productos/'.$producto->file_path.'/t_'.$producto->imagen))
                                 @php($imagen = asset('img/productos/'.$producto->file_path.'/t_'.$producto->imagen))
                             @else
                                 @php($imagen = asset('img/img-placeholder-320x320.png'))

@@ -71,11 +71,13 @@
                             @php($total = 0)
                             @foreach ($carrito as $parametro)
                                 @php($i++)
-                                @if($parametro->imagen)
+
+                                @if (!is_null($parametro->imagen) && file_exists('img/productos/'.$parametro->file_path.'/t_'.$parametro->imagen))
                                     @php($imagen = asset('img/productos/'.$parametro->file_path.'/t_'.$parametro->imagen))
                                 @else
                                     @php($imagen = asset('img/img-placeholder-320x320.png'))
                                 @endif
+
                                 <tr class="remover_{{ $parametro->valor }}">
                                     <td class="{{--shoping__cart__item--}}">
                                         <img src="{{ $imagen }}" class="img-thumbnail" alt="">

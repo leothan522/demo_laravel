@@ -116,10 +116,15 @@
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Imagen</label>
                                 <div class="attachment-block clearfix">
-                                    <a href="@if ($categoria->imagen != null){{ asset('img/categorias/'.$categoria->file_path.'/'.$categoria->imagen) }}@else
-                                    {{ asset('img/img-placeholder-320x320.png') }}@endif" data-fancybox data-caption="{{ strtoupper($categoria->nombre) }}">
-                                        <img id="blah" class="attachment-img" src="@if ($categoria->imagen != null){{ asset('img/categorias/'.$categoria->file_path.'/t_'.$categoria->imagen) }}
-                                        @else{{ asset('img/img-placeholder-320x320.png') }}@endif" alt="Categoria Imagen">
+                                    @if (!is_null($categoria->imagen) && file_exists('img/categorias/'.$categoria->file_path.'/'.$categoria->imagen))
+                                        @php($imagen = asset('img/categorias/'.$categoria->file_path.'/'.$categoria->imagen))
+                                        @php($imagen_t = asset('img/categorias/'.$categoria->file_path.'/t_'.$categoria->imagen))
+                                    @else
+                                        @php($imagen = asset('img/img-placeholder-320x320.png'))
+                                        @php($imagen_t = asset('img/img-placeholder-320x320.png'))
+                                    @endif
+                                    <a href="{{ $imagen }}" data-fancybox data-caption="{{ strtoupper($categoria->nombre) }}">
+                                        <img id="blah" class="attachment-img" src="{{ $imagen_t }}" alt="Categoria Imagen">
                                     </a>
                                     <div class="attachment-pushed">
                                         <div class="attachment-text">

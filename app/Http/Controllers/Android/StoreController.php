@@ -361,6 +361,11 @@ class StoreController extends Controller
 
             $producto = Producto::find($id_producto);
             $precio = $producto->precio;
+            $cant_actual = $producto->cant_inventario;
+            $ventas_actual = $producto->cant_ventas;
+            $producto->cant_inventario = $cant_actual - $cantidad;
+            $producto->cant_ventas = $ventas_actual + $cantidad;
+            $producto->update();
 
             $articulo = new Articulo();
             $articulo->pedidos_id = $pedido->id;

@@ -360,10 +360,13 @@
                             <div class="form-group">
                                 {{--<label for="exampleInputEmail1">Imagen</label>--}}
                                 <div class="attachment-block clearfix">
-                                    <a href="@if ($producto->imagen != null){{ asset('img/productos/'.$producto->file_path.'/'.$producto->imagen) }}@else
-                                    {{ asset('img/img-placeholder-320x320.png') }}@endif" data-fancybox data-caption="{{ strtoupper($producto->nombre) }}">
-                                        <img id="blah" class="attachment-img" src="@if ($producto->imagen != null){{ asset('img/productos/'.$producto->file_path.'/t_'.$producto->imagen) }}
-                                        @else{{ asset('img/img-placeholder-320x320.png') }}@endif" alt="Producto Imagen">
+                                    @if (!is_null($producto->imagen) && file_exists('img/productos/'.$producto->file_path.'/'.$producto->imagen))
+                                        @php($imagen = asset('img/productos/'.$producto->file_path.'/'.$producto->imagen))
+                                    @else
+                                        @php($imagen = asset('img/img-placeholder-320x320.png'))
+                                    @endif
+                                    <a href="{{ $imagen }}" data-fancybox data-caption="{{ strtoupper($producto->nombre) }}">
+                                        <img id="blah" class="attachment-img" src="{{ $imagen }}" alt="Producto Imagen">
                                     </a><div class="attachment-pushed">
                                         <div class="attachment-text">
                                             <div class="input-group mb-3">
@@ -394,11 +397,19 @@
                                 <div class="tumbs">
                                     <a href="#" id="btn_galeria_imagen"><i class="fas fa-plus"></i></a>
                                     @foreach ($producto->galerias as $img)
+                                        @if (!is_null($producto->imagen) && file_exists('img/productos_galeria/'.$img->file_path.'/'.$img->imagen))
+                                            @php($imagen = asset('img/productos_galeria/'.$img->file_path.'/'.$img->imagen))
+                                            @php($imagen_t = asset('img/productos_galeria/'.$img->file_path.'/t_'.$img->imagen))
+                                        @else
+                                            @php($imagen = asset('img/img-placeholder-320x320.png'))
+                                            @php($imagen_t = asset('img/img-placeholder-320x320.png'))
+                                        @endif
+
                                         <div class="tumb">
                                             <button type="button" onclick="alertaBorrar(null, '{{ route('productos.galeria_delete', [$producto->id, $img->id]) }}')" class="btn_delete_galeria"><i class="fa fa-trash"></i></button>
                                             {{--<a href="{{ route('productos.galeria_delete', [$producto->id, $img->id]) }}" class="btn_delete_galeria"><i class="fa fa-trash"></i></a>--}}
-                                            <a href="{{ asset('img/productos_galeria/'.$img->file_path.'/'.$img->imagen) }}" data-fancybox data-caption="{{ strtoupper($img->nombre) }}">
-                                                <img src="{{ asset('img/productos_galeria/'.$img->file_path.'/t_'.$img->imagen) }}">
+                                            <a href="{{ $imagen }}" data-fancybox data-caption="{{ strtoupper($img->nombre) }}">
+                                                <img src="{{ $imagen_t }}">
                                             </a>
                                         </div>
                                     @endforeach
