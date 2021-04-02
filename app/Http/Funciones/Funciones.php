@@ -405,3 +405,39 @@ function estatusPedido($i = null)
     }
 }
 
+//Estados de los Pedidos
+function estadoPedido($i = null)
+{
+    $modulo = [
+        '0' => 'Cambiar estado a Pendiente de Pago',
+        '1' => 'Cambiar estado a En Espera',
+        '2' => 'Cambiar estado a Procesando',
+        '3' => 'Cambiar estado a Completado',
+        '4' => 'Cambiar estado a Cancelado'
+    ];
+    if (is_null($i)) {
+        return $modulo;
+    } else {
+        return $modulo[$i];
+    }
+}
+
+//Estados de los Pedidos label
+function estadoClass($i = null)
+{
+    $modulo = [
+        '0' => 'badge badge-info',
+        '1' => 'badge badge-warning',
+        '2' => 'badge badge-primary',
+        '3' => 'badge badge-success',
+        '4' => 'badge badge-danger'
+    ];
+    if (is_null($i)) {
+        return $modulo;
+    } else {
+        return $modulo[$i];
+    }
+}
+
+
+

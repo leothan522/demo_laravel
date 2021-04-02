@@ -5,8 +5,8 @@
 @section('header', 'Pedidos')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item active">Pedidos Registrados</li>
-    {{--<li class="breadcrumb-item"><a href="#">Nuevo Usuario</a></li>--}}
+    <li class="breadcrumb-item"><a href="{{ route('pedidos.index') }}">Pedidos Registrados</a></li>
+    <li class="breadcrumb-item active">Pedido #{{ $pedido->id }}</li>
 @endsection
 
 @section('link')
@@ -101,7 +101,7 @@
             <div class="col-md-6">
                 <div class="card card-purple">
                     <div class="card-header">
-                        <h5 class="card-title">Detalles del Pedido</h5>
+                        <h5 class="card-title">Detalles del Pedido #{{ $pedido->id }}</h5>
                         <div class="card-tools">
                             <span class="btn btn-tool"><i class="fas fa-shopping-bag"></i></span>
                         </div>
@@ -109,7 +109,7 @@
                     <div class="card-body">
 
 
-                
+
 
                     </div>
                 </div>
@@ -117,7 +117,7 @@
             <div class="col-md-3">
                 <div class="card card-purple">
                     <div class="card-header">
-                        <h5 class="card-title">Publicar</h5>
+                        <h5 class="card-title">Acciones del Pedido</h5>
                         <div class="card-tools">
                             <span class="btn btn-tool"><i class="fa fa-eye"></i></span>
                         </div>
@@ -125,17 +125,17 @@
                     <div class="card-body">
 
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Estado</label>
+                            <label for="exampleInputEmail1">Estatus</label>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-globe"></i></span>
                                 </div>
-                                {!! Form::select('estado', estadoProducto() , null, ['class' => 'custom-select', 'id' => 'select_estado', 'required']) !!}
+                                {!! Form::select('estado', estatusPedido() , $pedido->estatus, ['class' => 'custom-select', 'id' => 'select_estado', 'required']) !!}
                             </div>
                         </div>
 
                         <div class="form-group text-right">
-                            <input type="submit" id="boton_publicar" class="btn btn-block btn-info" value="Guardar Borrador">
+                            <input type="submit" id="boton_publicar" class="btn btn-block btn-primary" value="Actualizar">
                         </div>
 
                     </div>

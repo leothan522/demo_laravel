@@ -125,5 +125,99 @@ class PedidosController extends Controller
             ->with('ver', $ver);
     }
 
+    public function accionesLote(Request $request)
+    {
+        $total = count($request->all());
+        $num = $request->total;
+        if ($total <= 3) {
+            verSweetAlert2('Ningun pedido fue seleccionado.', 'toast', 'warning');
+            return back();
+        }
+        for ($i = 1; $i <= $num; $i++) {
+            $id = $request->input('pedidos_id_' . $i);
+            $pedido = Pedido::where('id', $id)->first();
+            if ($pedido) {
+                if ($request->accion != 100) {
+                    $pedido->estatus = $request->accion;
+                    $pedido->update();
+                } else {
+                    //$id_categoria = $pedido->categorias_id;
+                    $pedido->delete();
+                    /*$categoria = Categoria::find($id_categoria);
+                    $categoria->num_pedidos = $categoria->num_pedidos - 1;
+                    $categoria->update();*/
+                }
+            }
+        }
+        if ($request->accion != 100) {
+            verSweetAlert2('Pedidos actualizados correctamente.');
+        } else {
+            verSweetAlert2('Pedidos borrados correctamente.', 'iconHtml', 'error');
+        }
+        return back();
+    }
+
+    public function filtrar(Request $request)
+    {
+        $fecha = $request->fecha_filtrar;
+        $cliente = $request->cliente_filtrar;
+        $delivery = $request->delivery_filtrar;
+
+        //campos vacios todos
+        if ($fecha == null && $cliente == null && $delivery == null){
+            return redirect()->route('pedidos.index');
+        }
+        //***************
+
+        //buscar un solo valor
+        if ($fecha != null && $cliente == null && $delivery == null){
+            $pedidos = Pedido::where('fecha', $fecha)->orderBy('created_at', 'DESC')->paginate(30);
+        }
+
+        if ($fecha == null && $cliente != null && $delivery == null){
+            $pedidos = Pedido::where('nombre', 'LIKE', "%$cliente%")->orderBy('created_at', 'DESC')->paginate(30);
+        }
+
+        if ($fecha == null && $cliente == null && $delivery != null){
+            $pedidos = Pedido::where('delivery', $delivery)->orderBy('created_at', 'DESC')->paginate(30);
+        }
+        //***********************
+
+        //buscar dos valores
+        if ($fecha != null && $cliente != null && $delivery == null){
+            $pedidos = Pedido::where('fecha', $fecha)->where('nombre', 'LIKE', "%$cliente%")->orderBy('created_at', 'DESC')->paginate(30);
+        }
+        if ($fecha != null && $cliente == null && $delivery != null){
+            $pedidos = Pedido::where('fecha', $fecha)->where('delivery', $delivery)->orderBy('created_at', 'DESC')->paginate(30);
+        }
+        if ($fecha == null && $cliente != null && $delivery != null){
+            $pedidos = Pedido::where('nombre', 'LIKE', "%$cliente%")->where('delivery', $delivery)->orderBy('created_at', 'DESC')->paginate(30);
+        }
+        //************************
+
+        //buscar tres valores
+        if ($fecha != null && $cliente != null && $delivery != null){
+            $pedidos = Pedido::where('fecha', $fecha)->where('nombre', 'LIKE', "%$cliente%")->where('delivery', $delivery)->orderBy('created_at', 'DESC')->paginate(30);
+        }
+
+        $todos = Pedido::count();
+        $pendiente_pago = Pedido::where('estatus', 0)->count();
+        $en_espera = Pedido::where('estatus', 1)->count();
+        $procesando = Pedido::where('estatus', 2)->count();
+        $completado = Pedido::where('estatus', 3)->count();
+        $cancelado = Pedido::where('estatus', 4)->count();
+        $ver = 99;
+        return view('admin.pedidos.index')
+            ->with('pedidos', $pedidos)
+            ->with('todos', $todos)
+            ->with('pendiente_pago', $pendiente_pago)
+            ->with('en_espera', $en_espera)
+            ->with('procesando', $procesando)
+            ->with('completado', $completado)
+            ->with('cancelado', $cancelado)
+            ->with('filtro', $pedidos->count())
+            ->with('ver', $ver);
+    }
+
 
 }

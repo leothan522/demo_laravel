@@ -41,6 +41,9 @@ Route::middleware(['auth', 'user.status', 'isadmin'])->prefix('/admin')->group(f
         //Pedidos
         Route::resource('/pedidos', 'Admin\PedidosController');
         Route::get('/pedidos/ver/{estado}/pedidos', 'Admin\PedidosController@ver')->name('pedidos.ver');
+        Route::post('/pedidos/acciones/lote', 'Admin\PedidosController@accionesLote')->name('pedidos.acciones_lote');
+        Route::post('/pedidos/acciones/filtrar', 'Admin\PedidosController@filtrar')->name('pedidos.filtrar');
+
 
         //Ajustes
         Route::get('/ajustes', 'Admin\AjustesController@index')->name('ajustes.index');

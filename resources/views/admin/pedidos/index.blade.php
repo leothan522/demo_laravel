@@ -114,32 +114,51 @@
                             @else
                                 <li class="breadcrumb-item active">Todos ({{ cerosIzquierda($todos) }})</li>
                             @endif
-                            @if ($ver != 1)
-                                <li class="breadcrumb-item"><a href="{{ route('pedidos.ver', 1) }}">En Espera <span class="text-muted">({{ cerosIzquierda($en_espera) }})</span></a></li>
-                            @else
-                                <li class="breadcrumb-item active">En Espera <span class="text-muted">({{ cerosIzquierda($en_espera) }})</span></li>
-                            @endif
                             @if ($ver != 0)
                                 <li class="breadcrumb-item"><a href="{{ route('pedidos.ver', 0) }}">Pendiente de Pago <span class="text-muted">({{ cerosIzquierda($pendiente_pago) }})</span></a></li>
                             @else
                                 <li class="breadcrumb-item active">Pendiente de Pago <span class="text-muted">({{ cerosIzquierda($pendiente_pago) }})</span></li>
                             @endif
+                            @if ($ver != 1)
+                                <li class="breadcrumb-item"><a href="{{ route('pedidos.ver', 1) }}">En Espera <span class="text-muted">({{ cerosIzquierda($en_espera) }})</span></a></li>
+                            @else
+                                <li class="breadcrumb-item active">En Espera <span class="text-muted">({{ cerosIzquierda($en_espera) }})</span></li>
+                            @endif
+                            @if ($ver != 2)
+                                <li class="breadcrumb-item"><a href="{{ route('pedidos.ver', 2) }}">Procesando <span class="text-muted">({{ cerosIzquierda($procesando) }})</span></a></li>
+                            @else
+                                <li class="breadcrumb-item active">Procesando <span class="text-muted">({{ cerosIzquierda($procesando) }})</span></li>
+                            @endif
+                            @if ($ver != 3)
+                                <li class="breadcrumb-item"><a href="{{ route('pedidos.ver', 3) }}">Completado <span class="text-muted">({{ cerosIzquierda($completado) }})</span></a></li>
+                            @else
+                                <li class="breadcrumb-item active">Completado <span class="text-muted">({{ cerosIzquierda($completado) }})</span></li>
+                            @endif
+                            @if ($ver != 4)
+                                <li class="breadcrumb-item"><a href="{{ route('pedidos.ver', 4) }}">Cancelado <span class="text-muted">({{ cerosIzquierda($cancelado) }})</span></a></li>
+                            @else
+                                <li class="breadcrumb-item active">Cancelado <span class="text-muted">({{ cerosIzquierda($cancelado) }})</span></li>
+                            @endif
+                            @if ($ver == 99)
+                                    <li class="breadcrumb-item active">Filtro <span class="text-muted">({{ cerosIzquierda($filtro) }})</span></li>
+                            @endif
+
                         </ol>
                         <div class="row">
                             @php($i = 0)
-                        {{--@if (leerJson(Auth::user()->permisos, 'pedidos.edit') || Auth::user()->role == 100)
-                        {!! Form::open(['route' => ['productos.acciones_lote'], 'method' => 'post', 'class' => 'col-md-4', 'id' => 'form_lote']) !!}
+                        @if (leerJson(Auth::user()->permisos, 'pedidos.edit') || Auth::user()->role == 100)
+                        {!! Form::open(['route' => ['pedidos.acciones_lote'], 'method' => 'post', 'class' => 'col-md-4', 'id' => 'form_lote']) !!}
                             <div class="row">
-                                @php($acciones = estadoProducto())
+                                @php($acciones = estadoPedido())
                                 @if (leerJson(Auth::user()->permisos, 'productos.destroy') || Auth::user()->role == 100)
-                                    @php($acciones[100] = "Eliminar productos")
+                                    @php($acciones[100] = "Mover a la Papelera")
                                 @endif
                                 {!! Form::select('accion', $acciones , null , ['class' => 'custom-select col-md-7', 'placeholder' => 'Acciones en lote', 'id' => 'select_lote', 'required']) !!}
                                 <div class="d-none">
                                     @php($i = 0)
-                                    @foreach ($productos as $producto)
+                                    @foreach ($pedidos as $producto)
                                         @php($i++)
-                                        <input type="checkbox" name="productos_id_{{ $i }}" value="{{ $producto->id }}" id="hiddenCheck{{ $i }}">{{ $i }}
+                                        <input type="checkbox" name="pedidos_id_{{ $i }}" value="{{ $producto->id }}" id="hiddenCheck{{ $i }}">{{ $i }}
                                     @endforeach
                                     <input type="text" name="total" value="{{ $i }}">
                                     <input type="submit" id="btn_enviar" value="hola">
@@ -147,15 +166,18 @@
                                 <button type="button" id="btn_aplicar_lote" class="btn btn-outline-primary col-md-4">Aplicar</button>
                             </div>
                         {!! Form::close() !!}
-                        @endif--}}
+                        @endif
 
-                        {{--{!! Form::open(['route' => ['productos.filtrar'], 'method' => 'post', 'class' => 'col-md-7']) !!}
+                        {!! Form::open(['route' => ['pedidos.filtrar'], 'method' => 'post', 'class' => 'col-md-7']) !!}
                             <div class="row">
-                                {!! Form::select('categorias_id', $categorias, null , ['class' => 'custom-select col-md-4', 'placeholder' => 'Elige una categoria']) !!}
-                                {!! Form::select('estado', ['1' => 'Hay existecias', '0' => 'Agotado'] , null , ['class' => 'custom-select col-md-4 ml-1', 'placeholder' => 'Filtrar por inventario']) !!}
+                                {{--{!! Form::select('categorias_id', $categorias, null , ['class' => 'custom-select col-md-4', 'placeholder' => 'Elige una categoria']) !!}--}}
+                                {{--{!! Form::select('estado', ['1' => 'Hay existecias', '0' => 'Agotado'] , null , ['class' => 'custom-select col-md-4 ml-1', 'placeholder' => 'Filtrar por inventario']) !!}--}}
+                                {!! Form::date('fecha_filtrar', null /*\Carbon\Carbon::now()*/, ['class' => 'form-control col-md-3 ml-1']) !!}
+                                {!! Form::text('cliente_filtrar', null, ['class' => 'form-control col-md-3 ml-1', 'placeholder' => 'Filtrar por cliente registrado']) !!}
+                                {!! Form::select('delivery_filtrar', ['SI' => 'SI', 'NO' => 'NO'] , null , ['class' => 'custom-select col-md-3 ml-1', 'placeholder' => 'Filtrar por Delivery']) !!}
                                 <button type="submit" class="btn btn-outline-primary col-md-2 ml-1">Filtrar</button>
                             </div>
-                        {!! Form::close() !!}--}}
+                        {!! Form::close() !!}
                         </div>
 
                         <table class="table table-hover bg-light mt-3 table-responsive">
@@ -201,10 +223,12 @@
                                     </td>
                                     <td>{{ fecha($pedido->fecha) }}</td>
                                     <td>
-                                        {{ estatusPedido($pedido->estatus) }}
+                                        <span class="{{ estadoClass($pedido->estatus) }}">{{ estatusPedido($pedido->estatus) }}</span>
                                     </td>
                                     <td class="text-center text-bold">
-                                        <i class="fa fa-truck"></i> {{ $pedido->delivery }}
+                                        @if ($pedido->delivery == "SI")
+                                            <i class="fa fa-truck"></i>
+                                        @endif {{ $pedido->delivery }}
                                     </td>
                                     <td class="text-right text-bold">
                                         <i class="fa fa-dollar-sign"></i> {{ formatoMillares($pedido->total) }}
