@@ -43,6 +43,7 @@ Route::middleware(['auth', 'user.status', 'isadmin'])->prefix('/admin')->group(f
         Route::get('/pedidos/ver/{estado}/pedidos', 'Admin\PedidosController@ver')->name('pedidos.ver');
         Route::post('/pedidos/acciones/lote', 'Admin\PedidosController@accionesLote')->name('pedidos.acciones_lote');
         Route::post('/pedidos/acciones/filtrar', 'Admin\PedidosController@filtrar')->name('pedidos.filtrar');
+        Route::get('/pedidos/generar/pdf/{id}', 'Admin\PedidosController@generarPDF')->name('pedidos.pdf');
 
 
         //Ajustes

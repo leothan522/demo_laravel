@@ -183,7 +183,7 @@
                         <table class="table table-hover bg-light mt-3 table-responsive">
                             <thead class="thead-dark">
                             <tr>
-                                @if (leerJson(Auth::user()->permisos, 'productos.edit') || Auth::user()->role == 100)
+                                @if (leerJson(Auth::user()->permisos, 'pedidos.edit') || Auth::user()->role == 100)
                                 <th scope="col" class="text-center" data-breakpoints="xs" width="5%">
                                     <div class="custom-control custom-checkbox">
                                         <input type="checkbox" onclick="todosCheck('{{ $i }}')" class="custom-control-input accion-lote" id="customCheck0">
@@ -204,7 +204,7 @@
                             @foreach ($pedidos as $pedido)
                                 @php($i++)
                                 <tr>
-                                    @if (leerJson(Auth::user()->permisos, 'productos.edit') || Auth::user()->role == 100)
+                                    @if (leerJson(Auth::user()->permisos, 'pedidos.edit') || Auth::user()->role == 100)
                                     <th scope="row" class="text-center">
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" onclick="accionLote('{{ $i }}')" class="custom-control-input" id="customCheck{{ $i }}">
@@ -234,17 +234,18 @@
                                         <i class="fa fa-dollar-sign"></i> {{ formatoMillares($pedido->total) }}
                                     </td>
                                     <td class="text-center">
-                                        {!! Form::open(['route' => ['productos.destroy', $pedido->id], 'method' => 'DELETE', 'id' => 'form_delete_'.$pedido->id]) !!}
+                                        {!! Form::open(['route' => ['pedidos.destroy', $pedido->id], 'method' => 'DELETE', 'id' => 'form_delete_'.$pedido->id]) !!}
                                         <div class="btn-group">
-                                            @if (leerJson(Auth::user()->permisos, 'productos.edit') || Auth::user()->role == 100)
-                                                {{--<button type="button" class="btn btn-info" --}}{{--data-toggle="modal" data-target="#modal-{{ $pedido->id }}"--}}{{-->
-                                                    <i class="fas fa-eye"></i>
-                                                </button>--}}
+                                            @if (leerJson(Auth::user()->permisos, 'pedidos.show') || Auth::user()->role == 100)
                                                 <a href="{{ route('pedidos.show', $pedido->id) }}" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                                                <button type="button" class="btn btn-info" {{--data-toggle="modal" data-target="#modal-{{ $pedido->id }}"--}}>
-                                                    <i class="fas fa-file-pdf"></i>
+                                            @endif
+                                            @if (leerJson(Auth::user()->permisos, 'pedidos.confirmar_pago') || Auth::user()->role == 100)
+                                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-{{ $pedido->id }}">
+                                                    <i class="fas fa-university"></i>
                                                 </button>
-                                                {{--<a href="{{ route('productos.edit', $pedido->id) }}" class="btn btn-info"><i class="fas fa-edit"></i></a>--}}
+                                            @endif
+                                            @if (leerJson(Auth::user()->permisos, 'pedidos.generar_pdf') || Auth::user()->role == 100)
+                                                <a href="{{ route('pedidos.pdf', $pedido->id) }}" class="btn btn-info" target="_blank"><i class="fas fa-file-pdf"></i></a>
                                             @endif
                                             {{--@if (leerJson(Auth::user()->permisos, 'productos.destroy') || Auth::user()->role == 100)
                                                 @if ($pedido->por_defecto != 1)
@@ -257,6 +258,27 @@
                                             @endif--}}
                                         </div>
                                         {!! Form::close() !!}
+
+                                    <!-- Modal -->
+                                        <div class="modal fade" id="modal-{{ $pedido->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Confirmar Pago</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body text-left">
+                                                        ...
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
                                     </td>
                                 </tr>

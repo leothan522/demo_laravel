@@ -61,9 +61,10 @@
                 </div>
                 <div class="col-md-3">
                     <label class="col-md-12"><i class="fa fa-store"></i> E-commerce</label>
+                    @include('admin.usuarios.permisos.modulo_pedidos')
+                    @include('admin.usuarios.permisos.modulo_clientes')
                     @include('admin.usuarios.permisos.modulo_horarios')
                     @include('admin.usuarios.permisos.modulo_ajustes')
-                    @include('admin.usuarios.permisos.modulo_clientes')
                 </div>
                 <div class="col-md-3">
                     <label class="col-md-12"><i class="fa fa-box"></i> Productos</label>

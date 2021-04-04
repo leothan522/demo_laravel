@@ -164,6 +164,13 @@ class UsersController extends Controller
                     'ajustes.store' => $request->input('ajustes_index'),
                     'horarios.index' => $request->input('horarios_index'),
                     'horarios.store' => $request->input('horarios_index'),
+                    'pedidos.index' => $request->input('pedidos_index'),
+                    'pedidos.filtrar' => $request->input('pedidos_index'),
+                    'pedidos.edit' => $request->input('pedidos_edit'),
+                    'pedidos.acciones_lote' => $request->input('pedidos_edit'),
+                    'pedidos.confirmar_pago' => $request->input('pedidos_confirmar'),
+                    'pedidos.show' => $request->input('pedidos_show'),
+                    'pedidos.generar_pdf' => $request->input('pedidos_generar_pdf'),
                 ];
                 //******************************************** Usuarios SIDEBAR
                 if ($permisos['usuarios.index']) {
@@ -185,7 +192,7 @@ class UsersController extends Controller
                 }
 
                 //******************************************** E-commerce SIDEBAR
-                if ($permisos['clientes.index'] || $permisos['ajustes.index'] || $permisos['horarios.index']){
+                if ($permisos['clientes.index'] || $permisos['ajustes.index'] || $permisos['horarios.index'] || $permisos['pedidos.index']){
                     $permisos['e-commerce'] = "true";
                 }else{
                     $permisos['e-commerce'] = null;

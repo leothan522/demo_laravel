@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Categoria;
 use App\Models\Pedido;
 use App\Models\Producto;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 
 class PedidosController extends Controller
@@ -217,6 +218,13 @@ class PedidosController extends Controller
             ->with('cancelado', $cancelado)
             ->with('filtro', $pedidos->count())
             ->with('ver', $ver);
+    }
+
+    public function generarPDF($id)
+    {
+        $pedido = Pedido::find($id);
+        $pdf = \PDF::loadView('admin.pedidos.pdf_pedido', compact('pedido', $pedido));
+        return $pdf->download("Pedido_Nro_$pedido->id.pdf");
     }
 
 
