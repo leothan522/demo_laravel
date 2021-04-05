@@ -457,7 +457,7 @@ class StoreController extends Controller
             $pago->pedidos_id = $pedido->id;
             $pago->cuentas_id = $request->cuenta_id_transferencia;
             $pago->referencia = $request->referencia_transferencia;
-            $pago->tipo = "Pago";
+            $pago->tipo = "Transferencia";
             $pago->users_id = Auth::user()->id;
             $pago->save();
         }
@@ -467,7 +467,7 @@ class StoreController extends Controller
             $pago->pedidos_id = $pedido->id;
             $pago->cuentas_id = $request->cuenta_id_movil;
             $pago->referencia = $request->referencia_movil;
-            $pago->tipo = "Pago";
+            $pago->tipo = "Pago Movil";
             $pago->users_id = Auth::user()->id;
             $pago->save();
         }
@@ -476,7 +476,7 @@ class StoreController extends Controller
             $pago = new Movimiento();
             $pago->pedidos_id = $pedido->id;
             $pago->cuentas_id = 0;
-            $pago->tipo = "Pago";
+            $pago->tipo = "Divisas";
             $pago->users_id = Auth::user()->id;
             $pago->save();
         }

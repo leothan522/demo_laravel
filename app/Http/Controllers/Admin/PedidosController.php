@@ -3,11 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Articulo;
 use App\Models\Categoria;
+use App\Models\Cliente;
+use App\Models\Cuenta;
+use App\Models\Movimiento;
 use App\Models\Pedido;
 use App\Models\Producto;
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PedidosController extends Controller
 {
@@ -223,7 +228,26 @@ class PedidosController extends Controller
     public function generarPDF($id)
     {
         $pedido = Pedido::find($id);
-        $pdf = \PDF::loadView('admin.pedidos.pdf_pedido', compact('pedido', $pedido));
+        $articulos = Articulo::where('pedidos_id', $pedido->id)->get();
+        $cliente = Cliente::where('users_id', Auth::user()->id)->first();
+        $pagos = Movimiento::where('pedidos_id', $pedido->id)->get();
+        $pagos->each(function ($pago){
+            if ($pago->cuentas_id != 0) {
+                $cuenta = Cuenta::find($pago->cuentas_id);
+                if ($cuenta->tipo != "PAGO_MOVIL") {
+                    $pago->metodo = "TRANSFERENCIA";
+                } else {
+                    $pago->metodo = "PAGO MOVIL";
+                }
+                $pago->banco = $cuenta->banco;
+            }
+        });
+        $data = [
+          'pedido' => $pedido,
+          'articulos' => $articulos,
+          'pagos'   => $pagos
+        ];
+        $pdf = \PDF::loadView('admin.pedidos.pdf_pedido', $data);
         return $pdf->download("Pedido_Nro_$pedido->id.pdf");
     }
 
