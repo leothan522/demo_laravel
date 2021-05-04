@@ -12,8 +12,8 @@ class Producto extends Model
     use SoftDeletes;
     protected $table = "productos";
     protected $fillable = ['nombre', 'slug', 'sku', 'descripcion', 'categorias_id', 'precio', 'cant_inventario',
-                            'cant_ventas', 'poca_existencia', 'peso', 'und_peso', 'venta_individual', 'max_carrito',
-                            'file_path', 'imagen', 'estado', 'visibilidad', 'descuento'];
+        'cant_ventas', 'poca_existencia', 'peso', 'und_peso', 'venta_individual', 'max_carrito',
+        'file_path', 'imagen', 'estado', 'visibilidad', 'descuento'];
 
     public function categorias()
     {
@@ -33,6 +33,11 @@ class Producto extends Model
     public function articulos()
     {
         return $this->hasMany(Articulo::class, 'productos_id', 'id');
+    }
+
+    public function precios()
+    {
+        return $this->hasMany(Precio::class, 'productos_id', 'id');
     }
 
     public function scopeBuscar($query, $name)

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProductosRequest;
 use App\Models\Categoria;
 use App\Models\Galeria;
+use App\Models\Precio;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -110,9 +111,11 @@ class ProductosController extends Controller
     {
         $producto = Producto::findOrFail($id);
         $categorias = Categoria::orderBy('nombre', 'ASC')->pluck('nombre', 'id');
+        $precios = Precio::where('productos_id', $id)->orderBy('cant_inicio', 'ASC')->get();
         return view('admin.productos.edit')
             ->with('categorias', $categorias)
-            ->with('producto', $producto);
+            ->with('producto', $producto)
+            ->with('precios', $precios);
     }
 
     /**
@@ -353,4 +356,52 @@ class ProductosController extends Controller
             ->with('borrador', $borrador)
             ->with('publicado', $publicado);
     }
+
+    public function precioAdd(Request $request, $id)
+    {
+        $existe = false;
+        $producto = Producto::find($id);
+        $verPrecios = Precio::where('productos_id', $id)->get();
+        if (!$verPrecios->isEmpty()){
+            foreach ($verPrecios as $verPrecio){
+                if ($request->cant_inicio >= $verPrecio->cant_inicio && $request->cant_inicio <= $verPrecio->cant_final){
+                    $existe = true;
+                }
+                if ($request->cant_final >= $verPrecio->cant_inicio && $request->cant_final <= $verPrecio->cant_final){
+                    $existe = true;
+                }
+                if ($request->precio == $verPrecio->precio){
+                    $existe = true;
+                }
+                if ($verPrecio->cant_final == null){
+                    $existe = true;
+                }
+            }
+        }
+
+        if ($request->precio == $producto->precio){
+            $existe = true;
+        }
+
+        if ($existe){
+            verSweetAlert2('Precio Existente o Rango Duplicado', 'toast', 'warning');
+        }else{
+            $precio = new Precio($request->all());
+            $precio->productos_id = $id;
+            $precio->save();
+            verSweetAlert2('Cambios guardados correctamente.');
+        }
+
+        return redirect()->route('productos.edit', $id);
+    }
+
+    public function precioDelete($id, $pid)
+    {
+        $precio = Precio::findOrFail($pid);
+        $precio->delete();
+        verSweetAlert2('Precio al mayor borrado del producto', 'iconHtml', 'error', '<i class="fa fa-trash"></i>');
+        return back();
+    }
+
+
 }

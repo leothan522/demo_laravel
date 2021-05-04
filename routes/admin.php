@@ -37,6 +37,8 @@ Route::middleware(['auth', 'user.status', 'isadmin'])->prefix('/admin')->group(f
         Route::post('/productos/acciones/lote', 'Admin\ProductosController@accionesLote')->name('productos.acciones_lote');
         Route::post('/productos/acciones/filtrar', 'Admin\ProductosController@filtrar')->name('productos.filtrar');
         Route::get('/productos/ver/{estado}/productos', 'Admin\ProductosController@ver')->name('productos.ver');
+        Route::post('/productos/{id}/precio/add', 'Admin\ProductosController@precioAdd')->name('productos.precio_add');
+        Route::get('/productos/{id}/precio/{pid}/delete', 'Admin\ProductosController@precioDelete')->name('productos.precio_delete');
 
         //Pedidos
         Route::resource('/pedidos', 'Admin\PedidosController');

@@ -106,6 +106,44 @@
             $('#boton_publicar').attr('value', opcion).attr('class', clase)
         });
 
+        function guardarPrecio() {
+            var enviar = document.getElementById('botonEnviarPrecio');
+            var precio = document.getElementById('x_precio').value;
+            var cant_inicio = document.getElementById('x_cant_inicio').value;
+            var cant_final = document.getElementById('x_cant_final').value;
+            var input_precio = document.getElementById('z_precio');
+            var input_cant_inicio = document.getElementById('z_cant_inicio');
+            var input_cant_final = document.getElementById('z_cant_final');
+            //enviar.click();
+
+            if (precio.length == 0 || cant_inicio.length == 0){
+
+                Swal.fire({
+                    //toast: true,
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'No dejar campos vacios',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+
+            }else{
+                input_precio.value = precio;
+                input_cant_inicio.value = cant_inicio;
+                if (cant_final.length != 0){
+                    input_cant_final.value = cant_final;
+                }
+                enviar.click();
+                //alert(precio);
+            }
+
+
+
+
+        }
+
+
+
     </script>
 @endsection
 
@@ -278,6 +316,99 @@
                                 </div>
                             </div>
 
+                            @if ($producto->venta_individual != 1)
+
+                            @if (!$precios->isEmpty())
+                                <hr class="bg-purple">
+                                @foreach ($precios as $precio)
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="name">Precio al Mayor</label>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                                    </div>
+                                                    {!! Form::number('x_precio', $precio->precio, ['class' => 'form-control', 'placeholder' => 'Cantidad',
+                                                            'min' => 0, 'pattern' => "^[0-9]+", 'step' => '0.01', 'readonly']) !!}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="name">Cant. Minima</label>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><i class="fas fa-cube"></i></span>
+                                                    </div>
+                                                    {!! Form::number('x_cant_inicio', $precio->cant_inicio, ['class' => 'form-control', 'placeholder' => 'Cantidad',
+                                                            'min' => 0, 'pattern' => "^[0-9]+", 'readonly']) !!}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="name">Cant. Maxima</label>
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><i class="fas fa-cubes"></i></span>
+                                                    </div>
+                                                    {!! Form::number('x_cant_final', $precio->cant_final, ['class' => 'form-control', 'placeholder' => 'Cantidad',
+                                                             'min' => 1, 'pattern' => "^[0-9]+", 'readonly']) !!}
+                                                    <button type="button" class="btn btn-danger btn-sm ml-1" onclick="alertaBorrar(null, '{{ route('productos.precio_delete', [$producto->id, $precio->id]) }}')"><i class="fa fa-trash-alt"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                @endforeach
+                            @endif
+
+                            <hr class="bg-purple">
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="name">Precio al Mayor</label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                            </div>
+                                            {!! Form::number('x_precio', null, ['class' => 'form-control', 'placeholder' => 'Cantidad',
+                                                    'min' => 0, 'pattern' => "^[0-9]+", 'step' => '0.01', 'id' => 'x_precio']) !!}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="name">Cant. Minima</label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-cube"></i></span>
+                                            </div>
+                                            {!! Form::number('x_cant_inicio', null, ['class' => 'form-control', 'placeholder' => 'Cantidad',
+                                                    'min' => 0, 'pattern' => "^[0-9]+", 'id' => 'x_cant_inicio']) !!}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="name">Cant. Maxima</label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-cubes"></i></span>
+                                            </div>
+                                            {!! Form::number('x_cant_final', null, ['class' => 'form-control', 'placeholder' => 'Cantidad',
+                                                     'min' => 1, 'pattern' => "^[0-9]+", 'id' => 'x_cant_final']) !!}
+                                            <button type="button" class="btn btn-primary btn-sm ml-1" onclick="guardarPrecio()"><i class="fa fa-save"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @endif
+
                             <hr class="bg-purple">
 
                             <div class="form-group">
@@ -423,9 +554,20 @@
 
         </div>
         {!! Form::close() !!}
+
+        {{-- Galeria de Imagenes--}}
         {!! Form::open(['route' => ['productos.galeria_add', $producto->id], 'method' => 'post', 'files' => true, 'id' => 'formGaleria']) !!}
             {!! Form::file('imagen', ['id' => 'galeria_imagen', 'accept' => 'image/jpeg, image/png', 'required']) !!}
         {!! Form::close() !!}
+
+        {{--Precios al Mayor--}}
+        {!! Form::open(['route' => ['productos.precio_add', $producto->id], 'method' => 'post', 'id' => 'formPrecio', 'class' => 'd-none']) !!}
+            <input type="text" name="precio" value="" placeholder="precio" id="z_precio" required>
+            <input type="text" name="cant_inicio" value="" placeholder="z_cant_inicio" id="z_cant_inicio" required>
+            <input type="text" name="cant_final" value="" placeholder="z_cant_final" id="z_cant_final">
+            <input type="submit" value="Enviar" id="botonEnviarPrecio">
+        {!! Form::close() !!}
+
     </div>
 
 

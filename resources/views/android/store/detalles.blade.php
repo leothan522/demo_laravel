@@ -62,6 +62,22 @@
                             @endif
                         </div>
                         {!! $producto->descripcion !!}
+                        @if (!$precios->isEmpty())
+
+                            <div class="product__details__rating">
+                                <span>Precios al Mayor</span><br>
+                                @foreach ($precios as $precio)
+                                    @if ($precio->cant_final != null)
+                                        <span>${{ formatoMillares($precio->precio) }}</span> al comprar entre {{ $precio->cant_inicio }} - {{ $precio->cant_final }}<br>
+                                        @else
+                                        <span>${{ formatoMillares($precio->precio) }}</span> al comprar mas de {{ $precio->cant_inicio }}<br>
+                                    @endif
+
+                                @endforeach
+                            </div>
+
+                        @endif
+
                         @if ($producto->cant_inventario)
                         <div class="row">
                         <div class="product__details__quantity">

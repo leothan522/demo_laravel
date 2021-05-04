@@ -11,6 +11,7 @@ use App\Models\Galeria;
 use App\Models\Movimiento;
 use App\Models\Parametro;
 use App\Models\Pedido;
+use App\Models\Precio;
 use App\Models\Producto;
 use App\Models\Zona;
 use Illuminate\Http\Request;
@@ -70,8 +71,12 @@ class StoreController extends Controller
             $producto->favoritos = Parametro::where('nombre', 'favoritos')->where('tabla_id', Auth::user()->id)->where('valor', $producto->id)->first();
             $producto->carrito = Parametro::where('nombre', 'carrito')->where('tabla_id', Auth::user()->id)->where('valor', $producto->id)->first();
         });
+
+        $precios = Precio::where('productos_id', $producto)->get();
+
         return view('android.store.detalles')
             ->with('producto', $detalle)
+            ->with('precios', $precios)
             ->with('galeria', $galeria)
             ->with('relacionados', $relacionados);
     }
