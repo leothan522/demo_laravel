@@ -14,8 +14,8 @@
                 <a onclick="verCargando();" href="@if($categoria->disponibles > 0) {{ route('android.categorias.show', [Auth::user()->id, $categoria->id]) }} @else # @endif">
                     <div class="card card-widget widget-user-2">
                         <div class="widget-user-header bg-info">
-                            <div class="widget-user-image">
-                                <img class="img-circle elevation-2" src="{{ $imagen }}" alt="{{ $categoria->nombre }}">
+                            <div class="widget-user-image bg-white">
+                                <img class="img-circle elevation-2" src="{{ $imagen }}" alt="{{ $categoria->nombre }}" width="300" height="300">
                             </div>
                             <!-- /.widget-user-image -->
                             <h3 class="widget-user-username"><small>{{ strtoupper($categoria->nombre) }}</small></h3>
