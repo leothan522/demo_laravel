@@ -92,7 +92,7 @@ Route::middleware('android')->prefix('/android')->group(function (){
 
 
 //*************************************************** Rutas para web Wordpress
-Route::prefix('/wordpress')->group(function (){
+Route::middleware(['auth', 'user.status'])->prefix('/wordpress')->group(function (){
 
     //store
     Route::get('/store/', 'Android\StoreController@prueba')->name('android.store.prueba');
