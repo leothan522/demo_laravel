@@ -25,7 +25,7 @@ class Android
                 $root = true;
             }
         }
-        if ($agent->isMobile() || $root){
+        if (true/*$agent->isMobile() */|| $root){
             return $next($request);
         }else{
             return redirect()->route('cerrar');
