@@ -96,6 +96,10 @@ Route::middleware(['auth', 'user.status'])->prefix('/wordpress')->group(function
 
     //store
     Route::get('/store/', 'Android\StoreController@prueba')->name('android.store.prueba');
+    Route::get('/logout', function () {
+        Auth::logout();
+        return back();
+    })->name('store.cerrar');
 
 });
 
