@@ -38,24 +38,59 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('android.store.prueba') }}" class="nav-link" target="_blank">
-                <i class="fa fa-cash-register"></i> Prueba
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="{{ route('store.cerrar') }}" class="nav-link" target="_blank">
-                <i class="fa fa-cash-register"></i> Salir
-            </a>
-        </li>
-        <li class="nav-item">
             <a href="{{ route('android.no_definida', Auth::user()->id) }}" class="nav-link" target="_blank">
                 <i class="fa fa-ban"></i> No Definida
             </a>
         </li>
-        <li class="dropdown-divider"></li>
+		
+		<!-- divider -->
+		
+		 <li class="nav-item">
+            <span class="text-small text-muted float-right">Web</span>
+        </li>
+		<li class="dropdown-divider"></li>
+		<li class="nav-item">
+            <a href="{{ route('wordpress.logout') }}" class="nav-link" target="_blank">
+                <i class="fas fa-sign-out-alt"></i> Salir
+            </a>
+        </li>
+		<li class="nav-item">
+            <a href="{{ route('wordpress.store.index') }}" class="nav-link" target="_blank">
+                <i class="fa fa-store-alt"></i> Store
+            </a>
+        </li>
+		<li class="nav-item">
+            <a href="{{ route('wordpress.favoritos') }}" class="nav-link" target="_blank">
+                <i class="fa fa-heart"></i> Favoritos
+            </a>
+        </li>
+		<li class="nav-item">
+            <a href="{{ route('wordpress.categorias') }}" class="nav-link" target="_blank">
+                <i class="fa fa-cash-register"></i> Categorias
+            </a>
+        </li>
+		<li class="nav-item">
+            <a href="{{ route('wordpress.cuenta.index') }}" class="nav-link" target="_blank">
+                <i class="fa fa-address-card"></i> Cuenta
+            </a>
+        </li>
+		<li class="nav-item">
+            <a href="{{ route('wordpress.carrito') }}" class="nav-link" target="_blank">
+                <i class="fa fa-shopping-cart"></i> Carrito
+            </a>
+        </li>
+		<li class="nav-item">
+            <a href="{{ route('wordpress.pedidos') }}" class="nav-link" target="_blank">
+                <i class="fa fa-shopping-cart"></i> Pedidos
+            </a>
+        </li>
+        
+		<!--  divider -->
+		
         <li class="nav-item">
             <span class="text-small text-muted float-right">Plantilla Ogani</span>
         </li>
+		<li class="dropdown-divider"></li>
         <li class="nav-item">
             <a href="{{ route('android.shop_Home', Auth::user()->id) }}" class="nav-link" target="_blank">
                 {{--<i class="far fa-envelope"></i>--}} Home

@@ -8,7 +8,7 @@
 
 
     <!-- Hero Section Begin -->
-    {{--<section class="hero">
+    <!--<section class="hero">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -36,10 +36,10 @@
                                     class="icon fa fa-lock"></i> ¡Cerrado! @endif</strong>
                         </a>
                     </div>
-                    --}}{{--<div class="hero__item set-bg" data-setbg="{{ asset('img/banner_2.png') }}">
+                    {{--<div class="hero__item set-bg" data-setbg="{{ asset('img/banner_2.png') }}">
                         <div class="hero__text">
                             <span>#TELOCOMPRO</span>
-                            <h2>--}}{{----}}{{--Frase <br/>Publicitaria--}}{{----}}{{--</h2>
+                            <h2>--}}{{--Frase <br/>Publicitaria--}}{{--</h2>
                             <p>Delivery Disponible</p>
                             <a href="#" id="btn_statusHours" @if(storeHours() && !$productos->isEmpty())
                             class="btn btn-success"
@@ -53,15 +53,15 @@
                                         class="icon fa fa-lock"></i> ¡Cerrado! @endif</strong>
                             </a>
                         </div>
-                    </div>--}}{{--
+                    </div>--}}
                 </div>
             </div>
         </div>
-    </section>--}}
+    </section> -->
     <!-- Hero Section End -->
 
-   {{-- @if (!$ultimos_productos->isEmpty())
-        <section class="latest-product spad">
+    @if (!$ultimos_productos->isEmpty())
+        <!-- <section class="latest-product spad">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-4 col-md-6">
@@ -136,11 +136,11 @@
                                         @endfor
                                     </div>
                                 @endif
-                                --}}{{-- <img src="#" alt="#" >--}}{{--
+                                {{-- <img src="#" alt="#" >--}}
                             </div>
                         </div>
                     </div>
-                    --}}{{-- <div class="col-lg-4 col-md-6">
+                    {{-- <div class="col-lg-4 col-md-6">
                          <div class="latest-product__text">
                              <h4>Productos mejor valorados</h4>
                              <div class="latest-product__slider owl-carousel">
@@ -204,8 +204,8 @@
                                  </div>
                              </div>
                          </div>
-                     </div>--}}{{--
-                    --}}{{-- <div class="col-lg-4 col-md-6">
+                     </div>--}}
+                    {{-- <div class="col-lg-4 col-md-6">
                          <div class="latest-product__text">
                              <h4>Revisar productos</h4>
                              <div class="latest-product__slider owl-carousel">
@@ -269,11 +269,11 @@
                                  </div>
                              </div>
                          </div>
-                     </div>--}}{{--
+                     </div>--}}
                 </div>
             </div>
-        </section>
-    @endif--}}
+        </section> -->
+    @endif
 
     <!-- Featured Section Begin -->
     @if (!$productos->isEmpty())
@@ -281,9 +281,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="section-title">
+                    <!-- <div class="section-title">
                         <h2>Productos Destacados</h2>
-                    </div>
+                    </div> -->
                     <div class="featured__controls">
                         <ul>
                             <li class="active" data-filter="*">Todos</li>
@@ -348,6 +348,10 @@
                         </div>
                     </div>
                 @endforeach
+				<div class="row col-md-12 justify-content-center">
+					{{ $productos->render() }}
+				</div>
+				
                 {{--<div class="col-lg-3 col-md-4 col-sm-6 mix vegetables fastfood">
                     <div class="featured__item">
                         <div class="featured__item__pic set-bg" data-setbg="{{ asset('ogani/img/featured/feature-2.jpg') }}">

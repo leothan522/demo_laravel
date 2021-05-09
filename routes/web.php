@@ -15,17 +15,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    if (Auth::user()){
+    /* if (Auth::user()){
         return view('welcome');
     }else{
         return redirect()->route('login');
-    }
+    } */
+	return redirect()->route('admin.dashboard');
 });
 
 Route::middleware(['auth:sanctum', 'verified', 'user.status'])->get('/dashboard', function () {
     //return view('dashboard');
     return view('welcome');
-})->name('dashboard');
+})->name('welcome');
 
 Route::get('/logout', function () {
     Auth::logout();
@@ -56,8 +57,8 @@ Route::middleware('android')->prefix('/android')->group(function (){
 
     // Rutas APP
     Route::get('/ruta/no/definida/{id?}', function () {
-        //return view('android.prueba');
-        return redirect()->route('android.categorias', Auth::user()->id);
+        return view('android.prueba');
+        //return redirect()->route('android.categorias', Auth::user()->id);
     })->name('android.no_definida');
 
     //Facturacion y envio
@@ -93,13 +94,23 @@ Route::middleware('android')->prefix('/android')->group(function (){
 
 //*************************************************** Rutas para web Wordpress
 Route::middleware(['auth', 'user.status'])->prefix('/wordpress')->group(function (){
-
-    //store
-    Route::get('/store/', 'Android\StoreController@prueba')->name('android.store.prueba');
+	
+	//Logout
     Route::get('/logout', function () {
         Auth::logout();
         return back();
-    })->name('store.cerrar');
+    })->name('wordpress.logout');
+	
+	//store
+    Route::get('/store', 'Web\StoreController@index')->name('wordpress.store.index');
+    Route::get('/favoritos', 'Web\StoreController@favoritos')->name('wordpress.favoritos');
+	Route::get('/categorias/', 'Web\StoreController@categorias')->name('wordpress.categorias');
+    Route::get('/categorias/{categoria}', 'Web\StoreController@categoriasShow')->name('wordpress.categorias.show');
+	Route::get('/cuenta', 'Web\StoreController@cuentaIndex')->name('wordpress.cuenta.index');
+    Route::post('/cuenta', 'Web\StoreController@cuentaUpdate')->name('wordpress.cuenta.update');
+	Route::get('/carrito', 'Web\StoreController@carrito')->name('wordpress.carrito');
+	Route::get('/pedidos', 'Web\StoreController@pedidosIndex')->name('wordpress.pedidos');
+	Route::get('/pedidos/{pedido}', 'Web\StoreController@pedidosShow')->name('wordpress.pedidos.show');
 
 });
 

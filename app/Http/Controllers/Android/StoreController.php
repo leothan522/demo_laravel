@@ -498,39 +498,4 @@ class StoreController extends Controller
     }
 
 
-    public function prueba()
-    {
-        $autenticar = new AppController();
-        $autenticar->autenticar(1);
-
-        $exite = Parametro::where('nombre', 'telefono_numero')->first();
-        if ($exite) {
-            $telefono_numero = $exite->valor;
-        } else {
-            $telefono_numero = "(0424) 338.66.00";
-        }
-        $exite = Parametro::where('nombre', 'telefono_texto')->first();
-        if ($exite) {
-            $telefono_texto = $exite->valor;
-        } else {
-            $telefono_texto = "support 24/7 time";
-        }
-
-        $categorias = Categoria::orderBy('num_productos', 'DESC')->get();
-        $ultimos_productos = Producto::where('estado', 1)->where('precio', '>', 0)->orderBy('updated_at', 'DESC')->paginate(6);
-        $productos = Producto::where('estado', 1)->where('precio', '>', 0)->orderBy('cant_ventas', 'DESC')->paginate(12);
-        $productos->each(function ($producto) {
-            $producto->favoritos = Parametro::where('nombre', 'favoritos')->where('tabla_id', Auth::user()->id)->where('valor', $producto->id)->first();
-            $producto->carrito = Parametro::where('nombre', 'carrito')->where('tabla_id', Auth::user()->id)->where('valor', $producto->id)->first();
-        });
-        return view('android.store.prueba')
-            ->with('telefono_numero', $telefono_numero)
-            ->with('telefono_texto', $telefono_texto)
-            ->with('categorias', $categorias)
-            ->with('ultimos_productos', $ultimos_productos)
-            ->with('productos', $productos)
-            ->with('i', 1);
-    }
-
-
 }

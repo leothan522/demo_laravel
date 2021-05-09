@@ -38,10 +38,11 @@ header("Content-Type: application/xml; charset=utf-8");
 </head>
 
 <body>
-<!-- Page Preloder -->
+<!-- Page Preloder 
 <div id="preloder">
     <div class="loader"></div>
 </div>
+-->
 
 {{--
 <!-- Humberger Begin -->

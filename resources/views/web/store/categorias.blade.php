@@ -14,7 +14,7 @@
 				@continue
 			@endif
             <div class="col-md-12">
-                <a onclick="verCargando();" href="@if($categoria->disponibles > 0) {{ route('android.categorias.show', [Auth::user()->id, $categoria->id]) }} @else # @endif">
+                <a onclick="verCargando();" href="@if($categoria->disponibles > 0) {{ route('wordpress.categorias.show', $categoria->id) }} @else # @endif">
                     <div class="card card-widget widget-user-2">
                         <div class="widget-user-header bg-info">
                             <div class="widget-user-image">
@@ -28,6 +28,7 @@
                 </a>
             </div>
         @endforeach
+
 
     </div>
 
