@@ -5,8 +5,8 @@
     <div class="row">
 
         @foreach($categorias as $categoria)
-            @if (!is_null($categoria->imagen) && file_exists('img/categorias/'.$categoria->file_path.'/'.$categoria->imagen))
-                @php($imagen = asset('img/categorias/'.$categoria->file_path.'/'.$categoria->imagen))
+            @if (!is_null($categoria->imagen) && file_exists('img/categorias/'.$categoria->file_path.'/t_'.$categoria->imagen))
+                @php($imagen = asset('img/categorias/'.$categoria->file_path.'/t_'.$categoria->imagen))
             @else
                 @php($imagen = asset('img/img-placeholder-320x320.png'))
             @endif

@@ -126,6 +126,11 @@ class StoreController extends Controller
         $autenticar = new AppController();
         $autenticar->autenticar($id);
         $dolar = Parametro::where('nombre', 'precio_dolar')->first();
+        if ($dolar){
+            $precio_dolar = $dolar->precio;
+        }else{
+            $precio_dolar = null;
+        }
         $carrito = Parametro::where('nombre', 'carrito')->where('tabla_id', Auth::user()->id)->get();
         $agrupados = $carrito->groupBy('valor');
         $agrupados->each(function ($parametro) {
@@ -167,7 +172,7 @@ class StoreController extends Controller
 
         return view('android.store.carrito')
             ->with('carrito', $agrupados)
-            ->with('dolarPrecio', $dolar->valor)
+            ->with('dolarPrecio', $precio_dolar)
             ->with('zonas', $zonas)
             ->with('i', 0);
     }

@@ -38,17 +38,17 @@ class StoreController extends Controller
             $telefono_texto = "support 24/7 time";
         }
 		$ultimos_productos = Producto::where('estado', 1)->where('precio', '>', 0)->orderBy('updated_at', 'DESC')->paginate(6);
-        
-		
+
+
         $categorias = Categoria::where('num_productos', '>', 0)->orderBy('num_productos', 'DESC')->get();
-        
+
 		//productos disponibles
 		$productos = Producto::where('estado', 1)->where('precio', '>', 0)->orderBy('cant_ventas', 'DESC')->paginate(24);
         $productos->each(function ($producto) {
             $producto->favoritos = Parametro::where('nombre', 'favoritos')->where('tabla_id', Auth::user()->id)->where('valor', $producto->id)->first();
             $producto->carrito = Parametro::where('nombre', 'carrito')->where('tabla_id', Auth::user()->id)->where('valor', $producto->id)->first();
         });
-		
+
         return view('web.store.index')
             ->with('telefono_numero', $telefono_numero)
             ->with('telefono_texto', $telefono_texto)
@@ -57,12 +57,12 @@ class StoreController extends Controller
             ->with('productos', $productos)
             ->with('i', 1);
 	}
-	
+
 	public function favoritos()
     {
-		
+
 		$categorias = Categoria::where('num_productos', '>', 0)->orderBy('num_productos', 'DESC')->get();
-		
+
         $favoritos = Parametro::where('nombre', 'favoritos')->where('tabla_id', Auth::user()->id)->paginate(24);
         $favoritos->each(function ($parametro) {
             $producto = Producto::find($parametro->valor);
@@ -83,7 +83,7 @@ class StoreController extends Controller
             ->with('favoritos', $favoritos)
             ->with('i', 1);
     }
-	
+
 	public function categorias()
     {
         $categorias = Categoria::orderBy('nombre', 'ASC')->get();
@@ -98,9 +98,9 @@ class StoreController extends Controller
         return view('web.store.categorias')
             ->with('categorias', $categorias);
     }
-	
+
 	public function categoriasShow($categoria)
-    {        
+    {
         $ultimos_productos = Producto::where('categorias_id', $categoria)->where('precio', '>', 0)->orderBy('updated_at', 'DESC')->paginate(6);
         $en_oferta = Producto::where('visibilidad', 1)->where('precio', '>', 0)->where('estado', 1)->where('cant_inventario', '>', 0)->orderBy('updated_at', 'DESC')->get();
         $en_oferta->each(function ($producto) {
@@ -126,10 +126,10 @@ class StoreController extends Controller
             ->with('total', $total)
             ->with('i', 1);
     }
-	
+
 	public function cuentaIndex()
     {
-        
+
         $cliente = Cliente::where('users_id', Auth::user()->id)->first();
         if ($cliente){
             $id_cliente = $cliente->id;
@@ -212,11 +212,16 @@ class StoreController extends Controller
 
         return back();
     }
-	
+
 	public function carrito()
     {
-        
+
         $dolar = Parametro::where('nombre', 'precio_dolar')->first();
+        if ($dolar){
+            $precio_dolar = $dolar->precio;
+        }else{
+            $precio_dolar = null;
+        }
         $carrito = Parametro::where('nombre', 'carrito')->where('tabla_id', Auth::user()->id)->get();
         $agrupados = $carrito->groupBy('valor');
         $agrupados->each(function ($parametro) {
@@ -258,11 +263,11 @@ class StoreController extends Controller
 
         return view('web.store.carrito')
             ->with('carrito', $agrupados)
-            ->with('dolarPrecio', $dolar->valor)
+            ->with('dolarPrecio', $precio_dolar)
             ->with('zonas', $zonas)
             ->with('i', 0);
     }
-	
+
 	public function pedidosIndex()
     {
         $pedidos = Pedido::where('users_id', Auth::user()->id)->orderBy('created_at', 'DESC')->get();
@@ -296,5 +301,5 @@ class StoreController extends Controller
             ->with('cliente', $cliente)
             ->with('pagos', $pagos);
     }
-	
+
 }
