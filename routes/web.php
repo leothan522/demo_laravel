@@ -56,6 +56,7 @@ Route::middleware('android')->prefix('/android')->group(function (){
     Route::get('/shop/home/', 'Android\AppController@shopHome')->name('android.shop_Home');
 
     // Rutas APP
+    Route::get('/quienes/somos/{id}', 'Android\AppController@quienesSomos')->name('android.quienes_somos');
     Route::get('/ruta/no/definida/{id?}', function () {
         return view('android.prueba');
         //return redirect()->route('android.categorias', Auth::user()->id);
@@ -94,13 +95,13 @@ Route::middleware('android')->prefix('/android')->group(function (){
 
 //*************************************************** Rutas para web Wordpress
 Route::middleware(['auth', 'user.status'])->prefix('/wordpress')->group(function (){
-	
+
 	//Logout
     Route::get('/logout', function () {
         Auth::logout();
         return back();
     })->name('wordpress.logout');
-	
+
 	//store
     Route::get('/store', 'Web\StoreController@index')->name('wordpress.store.index');
     Route::get('/favoritos', 'Web\StoreController@favoritos')->name('wordpress.favoritos');

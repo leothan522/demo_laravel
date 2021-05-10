@@ -50,5 +50,12 @@ class AppController extends Controller
         return view('android.ogani.shop-home');
     }
 
+    public function quienesSomos($id)
+    {
+        $autenticar = new AppController();
+        $autenticar->autenticar($id);
+        return view('android.prueba');
+    }
+
 
 }

@@ -38,13 +38,13 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('android.no_definida', Auth::user()->id) }}" class="nav-link" target="_blank">
-                <i class="fa fa-ban"></i> No Definida
+            <a href="{{ route('android.quienes_somos', Auth::user()->id) }}" class="nav-link" target="_blank">
+                <i class="fa fa-ban"></i> Quienes Somos
             </a>
         </li>
-		
+
 		<!-- divider -->
-		
+
 		 <li class="nav-item">
             <span class="text-small text-muted float-right">Web</span>
         </li>
@@ -84,9 +84,9 @@
                 <i class="fa fa-shopping-cart"></i> Pedidos
             </a>
         </li>
-        
+
 		<!--  divider -->
-		
+
         <li class="nav-item">
             <span class="text-small text-muted float-right">Plantilla Ogani</span>
         </li>
